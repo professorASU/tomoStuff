@@ -1,0 +1,394 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Slide&Flip demo</title>
+    <meta name="viewport" content="width=device-width,user-scalable=no">
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            background: #000;
+            font-family: 'Press Start 2P', sans-serif;
+            text-shadow: 0px 0px 5px #fff;
+        }
+
+        #startMenu {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            height: 270px;
+            width: 270px;
+            background: #000;
+            text-align: center;
+            color: #fff;
+            font-family: 'Press Start 2P', sans-serif;
+            border: 3px solid #fff;
+        }
+
+        button {
+            padding: 5px;
+            border: 2px solid #fff;
+            background: #fff;
+            font-family: 'Press Start 2P', sans-serif;
+            outline: none;
+        }
+
+        button:hover {
+            filter: brightness(60%);
+        }
+
+        canvas {
+            border: 3px solid #fff;
+        }
+
+        #scoreBoard {
+            position: absolute;
+            top: 280px;
+            color: #fff;
+        }
+
+        #resultPort {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            height: 270px;
+            width: 270px;
+            background: #000;
+            text-align: center;
+            color: #fff;
+            font-family: 'Press Start 2P', sans-serif;
+            border: 3px solid #fff;
+            display: none;
+        }
+
+        #rank {
+            height: 100px;
+            filter: drop-shadow(2px 4px 6px white);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="startMenu">
+        <h4>Slide<br>&<br>Flip<br>demo ver.</h4>
+        <button onclick="startGameTrig()">START</button>
+        <h5>fit the shape</h5>
+    </div>
+    <div id="scoreBoard">
+        <strong>Score: </strong><span id="score">0</span>
+        <br><strong id="stats"></strong>
+    </div>
+    <div id="resultPort">
+        <h4>RANK</h4>
+        <img src="./img/rankS.png" id="rank"><br>
+        <span><b>accuracy: </b><span id="accShow">-</span>%</span>
+        <br><br>
+        <button onclick="location.reload()">RETRY</button>
+    </div>
+    <script>
+        var bpm = 127;
+        var audi = new Audio("./audio/mufleSample.wav");
+        var rot = [];
+        var rotP, movP;
+        var mov = [];
+        var dd = 6000 / bpm;
+
+        var hitP = new Audio("./audio/soft-hitwhistle.wav");
+        var hit = [];
+
+        var confirmSound = new Audio("./audio/match-confirm.wav");
+
+        var beatMapTime = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 3, 2, 0, 0, 2, 0, 3, 2, 3, 0, 0, 2, 3, 2, 3, 2, 3, 2, 1, 0, 2, 1, 2, 1, 2, 3, 4, 3, 4, 3, 2, 1, 2, 1, 2, 1, 0, 2, 0, 3, 2, 3, 0, 0, 2, 3, 2, 3, 2, 3, 2, 1, 0, 2, 1, 2, 1, 2, 3, 4, 3, 4, 3, 2, 1, 2, 1, 2, 1];
+        var beatMapType = [0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 1];
+        var onBeat = 0;
+
+        var playerPosition = 1;
+        var playerDir = 0;
+
+        var scoreA = 0;
+
+        //key binding variables
+        var dKeyPressed = false;
+        var dKeyRelease = false;
+        var fKeyPressed = false;
+        var fKeyRelease = false;
+        var jKeyPressed = false;
+        var jKeyRelease = false;
+        var kKeyPressed = false;
+        var kKeyRelease = false;
+
+        var gg = {
+            canvas: document.createElement("canvas"),
+            start: function () {
+                this.canvas.width = 270;
+                this.canvas.height = 270;
+                this.context = this.canvas.getContext("2d");
+                document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+                this.frameNo = 0;
+                audi.play();
+                startTimer();
+                this.interval = setInterval(updateGameArea, 0);
+            },
+            clear: function () {
+                this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                this.context.fillStyle = "#000000";
+            }
+        }
+
+        //drawing of the test image - img1
+        var fallRT = new Image();
+        fallRT.src = 'img/playerRightTri.png';
+        var fallLT = new Image();
+        fallLT.src = 'img/playerLeftTri.png';
+
+
+        var shadRT = new Image();
+        shadRT.src = 'img/shadowRightTri.png';
+        var shadLT = new Image();
+        shadLT.src = 'img/shadowLeftTri.png';
+
+
+        var playRT = new Image();
+        playRT.src = 'img/fallingRightTri.png';
+        var playLT = new Image();
+        playLT.src = 'img/fallingLeftTri.png';
+
+        var beamR = new Image();
+        beamR.src = 'img/lightBeamR.png';
+        var beamL = new Image();
+        beamL.src = 'img/lightBeamL.png';
+
+        var missB = new Image();
+        missB.src = "img/miss.png";
+        var goodB = new Image();
+        goodB.src = "img/good.png";
+        var shotB = new Image();
+        shotB.src = "img/shottastic.png";
+
+        var missP;
+        var miss = [];
+
+        var whichKey;
+
+        function updateGameArea() {
+            ctx = gg.context;
+
+            gg.clear();
+
+            document.getElementById("score").innerHTML = scoreA;
+
+            for (i = 0; i < beatMapTime.length; i++) {
+                var ken = i + 1;
+                if (beatMapType[i] == 0) {
+                    ctx.drawImage(fallRT, 60 * beatMapTime[i] - 30, (cane - (i + 1)) * 30);
+                } else {
+                    ctx.drawImage(fallLT, 60 * beatMapTime[i] - 30, (cane - (i + 1)) * 30);
+                }
+            }
+
+            // key controls for player movement
+            if (dKeyPressed == true && dKeyRelease == false) {
+                dKeyRelease = true;
+                movP = new Audio("./audio/mov.wav");
+                mov.push(movP);
+                // mov[mov.length-1].play();
+                if (playerPosition != 1) {
+                    moveAnim("left", 0);
+                } else {
+                    playerPosition = 4;
+                }
+            } else if (fKeyPressed == true && fKeyRelease == false) {
+                movP = new Audio("./audio/mov.wav");
+                mov.push(movP);
+                // mov[mov.length - 1].play();
+                fKeyRelease = true;
+                if (playerPosition != 4) {
+                    moveAnim("right", 0);
+                } else {
+                    playerPosition = 1;
+                }
+            } else if (jKeyPressed == true && jKeyRelease == false) {
+                jKeyRelease = true;
+                rotP = new Audio("./audio/rot.wav")
+                rot.push(rotP);
+                // rot[rot.length-1].play();
+
+                if (playerPosition != 1) {
+                    playerPosition -= 1;
+                } else {
+                    playerPosition = 4;
+                }
+
+                if (playerDir == 1) {
+                    playerDir = 0;
+                } else {
+                    playerDir = 1;
+                }
+            } else if (kKeyPressed == true && kKeyRelease == false) {
+                kKeyRelease = true;
+                rotP = new Audio("./audio/rot.wav")
+                rot.push(rotP);
+                // rot[rot.length-1].play();
+
+                if (playerPosition != 4) {
+                    playerPosition += 1;
+                } else {
+                    playerPosition = 1;
+                }
+
+                if (playerDir == 1) {
+                    playerDir = 0;
+                } else {
+                    playerDir = 1;
+                }
+            }
+
+            if (playerDir == 0) {
+                ctx.drawImage(shadRT, 30, 240);
+                ctx.drawImage(shadRT, 90, 240);
+                ctx.drawImage(shadRT, 150, 240);
+                ctx.drawImage(shadRT, 210, 240);
+
+                ctx.drawImage(playRT, 60 * playerPosition - 30, 240);
+
+                ctx.drawImage(beamR, 60 * playerPosition - 30, 150);
+            } else {
+                ctx.drawImage(shadLT, 30, 240);
+                ctx.drawImage(shadLT, 90, 240);
+                ctx.drawImage(shadLT, 150, 240);
+                ctx.drawImage(shadLT, 210, 240);
+
+                ctx.drawImage(playLT, 60 * playerPosition - 30, 240);
+
+                ctx.drawImage(beamL, 60 * playerPosition - 30, 150);
+            }
+
+        }
+        var cane = 2;
+
+        function startTimer() {
+            if (audi.currentTime * 100 >= (dd / 2) * cane) {
+                cane += 1;
+                whichKey = beatMapTime[cane - 9];
+                if (cane >= 9 && cane <= beatMapTime.length + 9 && beatMapTime[cane - 9] != 0) {
+                    if (beatMapTime[cane - 9] == playerPosition || beatMapTime[cane - 8] == playerPosition || beatMapTime[cane - 10] == playerPosition) {
+                        if (beatMapTime[cane - 9] == playerPosition && beatMapType[cane - 9] == playerDir) {
+                            scoreA += 300;
+                            stats.style.color = "#88ff88";
+                            stats.innerHTML = "すげぇ〜！";
+                            hitP = new Audio("./audio/soft-hitwhistle.wav");
+                            hit.push(hitP);
+                            hit[hit.length - 1].play();
+                        } else if (beatMapTime[cane - 9] == playerPosition) {
+                            scoreA += 100;
+                            hitP = new Audio("./audio/soft-hitwhistle.wav");
+                            hit.push(hitP);
+                            hit[hit.length - 1].play();
+                            stats.style.color = "#8888ff";
+                            stats.innerHTML = "ま、いいんじゃね？";
+                        } else {
+                            scoreA += 50;
+                            stats.style.color = "#000000";
+                            stats.innerHTML = "ふ〜ん、、、";
+                        }
+                    } else {
+                        missP = new Audio("./audio/miss.wav");
+                        miss.push(missP);
+                        miss[miss.length - 1].play();
+                        stats.style.color = "#ff0000";
+                        stats.innerHTML = "miss";
+                    }
+                }
+
+                if (cane == 98) {
+                    showResult();
+                }
+            }
+            setTimeout(function () {
+                startTimer();
+            }, 1)
+        }
+
+        function startGameTrig() {
+            confirmSound.play();
+            document.getElementById("startMenu").style.display = "none";
+            gg.start();
+        }
+
+        var onKeyDown = function (event) {
+            switch (event.keyCode) {
+                case 68:
+                    dKeyPressed = true;
+                    break;
+                case 70:
+                    fKeyPressed = true;
+                    break;
+                case 74:
+                    jKeyPressed = true;
+                    break;
+                case 75:
+                    kKeyPressed = true;
+                    break;
+            }
+        };
+        var onKeyUp = function (event) {
+            switch (event.keyCode) {
+                case 68:
+                    dKeyPressed = false;
+                    dKeyRelease = false;
+                    break;
+                case 70:
+                    fKeyPressed = false;
+                    fKeyRelease = false;
+                    break;
+                case 74:
+                    jKeyPressed = false;
+                    jKeyRelease = false;
+                    break;
+                case 75:
+                    kKeyPressed = false;
+                    kKeyRelease = false;
+                    break;
+            }
+        };
+        document.addEventListener('keydown', onKeyDown, false);
+        document.addEventListener('keyup', onKeyUp, false);
+
+        function showResult() {
+            document.getElementById("resultPort").style.display = "block";
+
+            if (scoreA >= 18000 * 0.9) {
+                document.getElementById("rank").src = "./img/rankS.png";
+            } else if (scoreA >= 18000 * 0.8) {
+                document.getElementById("rank").src = "./img/rankA.png";
+            } else if (scoreA >= 18000 * 0.7) {
+                document.getElementById("rank").src = "./img/rankB.png";
+            } else if (scoreA >= 18000 * 0.6) {
+                document.getElementById("rank").src = "./img/rankC.png";
+            } else {
+                document.getElementById("rank").src = "./img/rankD.png";
+            }
+            document.getElementById("accShow").innerHTML = Math.floor((scoreA / 18000) * 100);
+            var end = new Audio("./audio/failsound.mp3");
+            end.play();
+        }
+
+        function moveAnim(d, c) {
+            if (d == "left") {
+                playerPosition -= 0.1;
+            } else {
+                playerPosition += 0.1;
+            }
+            setTimeout(function () {
+                if (c <= 8) {
+                    moveAnim(d, c + 1);
+                } else {
+                    playerPosition = Math.round(playerPosition);
+                }
+            })
+        }
+    </script>
+</body>
+
+</html>
