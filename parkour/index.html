@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <style>
+        body {
+            background-color: #000000;
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/94/three.min.js"></script>
+    <script>
+
+        var camera, scene, renderer;
+
+        //player main
+        var meColor, opColor, obColor;
+        var gRHand, gLHand, gBody;
+        var aRHand, aLHand, aBody;
+        var g = [];
+        var r = [];
+        var groundGeo, roofGeo, groundM, roofM;
+
+        var playerSVel = 0;
+        var playerDVel = 0;
+        var playerGvel = 0;
+        var gpos = -2;
+        var moveForward = false;
+        var moveRight = false;
+        var moveLeft = false;
+        var moveBackward = false;
+        var canJump = true;
+
+
+        //other players
+
+
+        function init() {
+
+            camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 0.1, 100);
+            camera.position.z = 0;
+            camera.position.y = -2;
+            camera.position.x = 0;
+
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xffffff);
+            scene.fog = new THREE.Fog(0xd7f4fa, 0, 15);
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+            scene.add(directionalLight);
+            directionalLight.position.z = 1;
+            const light = new THREE.AmbientLight(0x404040); // soft white light
+            scene.add(light);
+
+            gRHand = new THREE.BoxGeometry(1);
+            gLHand = new THREE.BoxGeometry(1);
+            meColor = new THREE.MeshPhongMaterial({ color: 0x273133 });
+            opColor = new THREE.MeshPhongMaterial({ color: 0xea2c13 });
+            obColor = new THREE.MeshPhongMaterial({ color: 0xffffff });
+
+            groundGeo = new THREE.BoxGeometry(10, 1, 1);
+            roofGeo = new THREE.BoxGeometry(1, 1, 1);
+
+            //ground geometry
+            makeGround();
+
+
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(800, 600);
+            document.body.appendChild(renderer.domElement);
+
+        }
+
+        function makeGround() {
+            for (i = 0; i < 150; i++) {
+                groundM = new THREE.Mesh(groundGeo, obColor);
+                groundM.position.y = -4;
+                groundM.position.z = -1 * i + 25;
+                g.push(groundM);
+                scene.add(g[i]);
+                i += Math.floor(Math.random());
+            }
+            for (i = 0; i < 50; i++) {
+                roofM = new THREE.Mesh(roofGeo, obColor);
+
+                var terrainMode = Math.round(Math.random());
+                if (terrainMode == 1 && i > 10) {
+                    roofM.position.y = -2
+                } else {
+                    roofM.position.y = Math.floor(Math.random() * 2);
+                }
+
+                roofM.position.x = Math.floor(Math.random() * 10) - 5;
+                roofM.position.z = -1 * i;
+                r.push(roofM);
+                scene.add(r[i]);
+                i += Math.floor(Math.random());
+            }
+        }
+
+        function animate(time) {
+
+            camera.position.z -= playerSVel;
+            camera.position.x += playerDVel;
+            if (moveForward == true && playerSVel <= 0.1) {
+                playerSVel += 0.003;
+            } else if (moveForward == false) {
+                playerSVel = playerSVel * 0.9;
+            }
+
+            if (moveRight == true && playerDVel <= 0.07) {
+                playerDVel += 0.003;
+            } else if (moveLeft == true && playerDVel >= -0.07) {
+                playerDVel -= 0.003;
+            }
+
+            if (camera.position.z <= -51) {
+                camera.position.z = 25;
+            }
+
+            if (moveRight == false && moveLeft == false) {
+                playerDVel = playerDVel * 0.9;
+            }
+
+            if (moveBackward == true) {
+                gpos = -3;
+            } else {
+                if (gpos <= -2) {
+                    gpos += 0.1;
+                }
+            }
+
+            if (camera.position.y <= gpos && playerGvel < 0) {
+                playerGvel = 0;
+                camera.position.y = gpos;
+            } else {
+                playerGvel -= 0.01;
+            }
+
+            if (camera.position.y == gpos) {
+                canJump = true;
+            } else {
+                canJump = false;
+            }
+
+            camera.position.y += playerGvel;
+
+            playerSVel = playerSVel * 0.99;
+
+            renderer.render(scene, camera);
+            requestAnimationFrame(animate);
+
+        }
+
+        var onKeyDown = function (event) {
+            switch (event.keyCode) {
+                case 38: // up
+                case 87: // w
+                    moveForward = true;
+                    break;
+                case 37: // left
+                case 65: // a
+                    moveLeft = true; break;
+                case 40: // down
+                case 83: // s
+                    if (moveBackward == false) {
+                        moveBackward = true;
+                        playerSVel += 0.2;
+                        setTimeout(function () {
+                            moveBackward = false;
+                        }, 1000)
+                    }
+                    break;
+                case 39: // right
+                case 68: // d
+                    moveRight = true;
+                    break;
+                case 32:
+                    if (canJump == true) playerGvel += 0.2;
+                    break;
+            }
+        };
+        var onKeyUp = function (event) {
+            switch (event.keyCode) {
+                case 38: // up
+                case 87: // w
+                    moveForward = false;
+                    break;
+                case 37: // left
+                case 65: // a
+                    moveLeft = false;
+                    break;
+                // case 40: // down
+                // case 83: // s
+                //     moveBackward = false;
+                //     break;
+                case 39: // right
+                case 68: // d
+                    moveRight = false;
+                    break;
+            }
+        };
+        document.addEventListener('keydown', onKeyDown, false);
+        document.addEventListener('keyup', onKeyUp, false);
+
+        init();
+        requestAnimationFrame(animate);
+
+    </script>
+</body>
+
+</html>
