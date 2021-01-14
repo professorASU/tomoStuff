@@ -19,7 +19,7 @@
         var camera, scene, renderer;
 
         //player main
-        var meColor, opColor, obColor;
+        var meColor, opColor, obColor, groundMaterial;
         var gRHand, gLHand, gBody;
         var aRHand, aLHand, aBody;
         var g = [];
@@ -56,11 +56,19 @@
             const light = new THREE.AmbientLight(0x404040); // soft white light
             scene.add(light);
 
+            directionalLight.castShadow = true;
+
+            directionalLight.shadow.mapSize.width = 512;
+            directionalLight.shadow.mapSize.height = 512;
+
             gRHand = new THREE.BoxGeometry(1);
             gLHand = new THREE.BoxGeometry(1);
             meColor = new THREE.MeshPhongMaterial({ color: 0x273133 });
             opColor = new THREE.MeshPhongMaterial({ color: 0xea2c13 });
             obColor = new THREE.MeshPhongMaterial({ color: 0xffffff });
+            groundMaterial = new THREE.MeshLambertMaterial({
+                color: 0xffffff
+            });
 
             groundGeo = new THREE.BoxGeometry(10, 1, 1);
             roofGeo = new THREE.BoxGeometry(1, 1, 1);
@@ -77,11 +85,13 @@
 
         function makeGround() {
             for (i = 0; i < 150; i++) {
-                groundM = new THREE.Mesh(groundGeo, obColor);
+                groundM = new THREE.Mesh(groundGeo, groundMaterial);
                 groundM.position.y = -4;
                 groundM.position.z = -1 * i + 25;
                 g.push(groundM);
                 scene.add(g[i]);
+                g[i].receiveShadow = true;
+                g[i].castShadow = false;
                 i += Math.floor(Math.random());
             }
             for (i = 0; i < 50; i++) {
