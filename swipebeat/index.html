@@ -146,6 +146,8 @@
 
         var timerRail = 0;
 
+        var bpm = 150;
+
         function init() {
             //initiate
             camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -278,7 +280,7 @@
                 for (i = 0; i < 16; i++) {
                     framees[i].position.z = frameOrigin[i] + timerRail;
                 }
-                timerRail += 0.2;
+                timerRail += 5 / (6000 / bpm);
             } else {
                 timerRail = 0;
             }
