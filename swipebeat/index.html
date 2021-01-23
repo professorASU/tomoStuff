@@ -135,7 +135,7 @@
         zt.bind(document.body, 'swipe', function (e) {
             console.log(e.detail);
             var swipeDir = Math.floor(e.detail.data[0].currentDirection);
-            if ((swipeDir <= 45 && swipeDir >= 0) || (swipeDir > 315 && swipeDir < 0)) {
+            if (swipeDir <= 45 || swipeDir > 315) {
                 //rights
                 swipeLife[0] += 10;
             } else if ((swipeDir > 45 && swipeDir <= 135)) {
