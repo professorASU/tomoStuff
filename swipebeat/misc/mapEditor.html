@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>scorezero editor</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+    <style>
+        body {
+            -webkit-touch-callout: none;
+            /* iOS Safari */
+            -webkit-user-select: none;
+            /* Safari */
+            -khtml-user-select: none;
+            /* Konqueror HTML */
+            -moz-user-select: none;
+            /* Old versions of Firefox */
+            -ms-user-select: none;
+            /* Internet Explorer/Edge */
+            user-select: none;
+        }
+
+        .topTab {
+            width: 100%;
+            padding: 2px 0px 2px 0px;
+            border-bottom: 1px solid #000;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .barFour {
+            width: 100px;
+            border-top: 1px solid #ff5555;
+            border-bottom: 1px solid #ff5555;
+        }
+
+        .barInd {
+            width: 60px;
+            border-top: 1px solid #000000;
+            border-bottom: 1px solid #000000;
+            height: 20px;
+        }
+
+        .barHalf {
+            width: 40px;
+            border-top: 1px solid #000000;
+            height: 1px;
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+
+        .containerA {
+            display: inline-block;
+            width: 100px;
+        }
+
+        .containerB {
+            display: inline-block;
+            width: 100px;
+            margin-top: 5px;
+        }
+
+        .fourBtn {
+            margin-bottom: 8px;
+        }
+
+        .eightBtn {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <div id="bars">
+            <div>
+                <div class="bar containerA">
+                    <div class="barFour">
+                        <div class="barInd">
+                            <div class="barHalf"></div>
+                        </div>
+                        <div class="barInd">
+                            <div class="barHalf"></div>
+                        </div>
+                        <div class="barInd">
+                            <div class="barHalf"></div>
+                        </div>
+                        <div class="barInd">
+                            <div class="barHalf"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="button" class="containerA">
+                    <span>1/4 notes</span>
+                    <select class="fourBtn">
+                        <option>なし</option>
+                        <option value="rightSwipe">→にスワイプ</option>
+                        <option value="leftSwipe">←にスワイプ</option>
+                        <option value="upSwipe">↑にスワイプ</option>
+                        <option value="downSwipe">↓にスワイプ</option>
+
+                        <option value="rightTopTap">右上のタップ</option>
+                        <option value="leftTopTap">左上のタップ</option>
+                        <option value="rightDownTap">右下のタップ</option>
+                        <option value="leftDownTap">左下のタップ</option>
+                    </select>
+                    <select class="fourBtn">
+                        <option>なし</option>
+                        <option value="rightSwipe">→にスワイプ</option>
+                        <option value="leftSwipe">←にスワイプ</option>
+                        <option value="upSwipe">↑にスワイプ</option>
+                        <option value="downSwipe">↓にスワイプ</option>
+
+                        <option value="rightTopTap">右上のタップ</option>
+                        <option value="leftTopTap">左上のタップ</option>
+                        <option value="rightDownTap">右下のタップ</option>
+                        <option value="leftDownTap">左下のタップ</option>
+                    </select>
+                    <select class="fourBtn">
+                        <option>なし</option>
+                        <option value="rightSwipe">→にスワイプ</option>
+                        <option value="leftSwipe">←にスワイプ</option>
+                        <option value="upSwipe">↑にスワイプ</option>
+                        <option value="downSwipe">↓にスワイプ</option>
+
+                        <option value="rightTopTap">右上のタップ</option>
+                        <option value="leftTopTap">左上のタップ</option>
+                        <option value="rightDownTap">右下のタップ</option>
+                        <option value="leftDownTap">左下のタップ</option>
+                    </select>
+                    <select class="fourBtn">
+                        <option>なし</option>
+                        <option value="rightSwipe">→にスワイプ</option>
+                        <option value="leftSwipe">←にスワイプ</option>
+                        <option value="upSwipe">↑にスワイプ</option>
+                        <option value="downSwipe">↓にスワイプ</option>
+
+                        <option value="rightTopTap">右上のタップ</option>
+                        <option value="leftTopTap">左上のタップ</option>
+                        <option value="rightDownTap">右下のタップ</option>
+                        <option value="leftDownTap">左下のタップ</option>
+                    </select>
+                </div>
+                <div id="button" class="containerB">
+                    <span>1/8 notes</span>
+                    <select class="eightBtn">
+                        <option>なし</option>
+                        <option>→にスワイプ</option>
+                        <option>←にスワイプ</option>
+                        <option>↑にスワイプ</option>
+                        <option>↓にスワイプ</option>
+
+                        <option>右上のタップ</option>
+                        <option>左上のタップ</option>
+                        <option>右下のタップ</option>
+                        <option>左下のタップ</option>
+                    </select>
+                    <select class="eightBtn">
+                        <option>なし</option>
+                        <option>→にスワイプ</option>
+                        <option>←にスワイプ</option>
+                        <option>↑にスワイプ</option>
+                        <option>↓にスワイプ</option>
+
+                        <option>右上のタップ</option>
+                        <option>左上のタップ</option>
+                        <option>右下のタップ</option>
+                        <option>左下のタップ</option>
+                    </select>
+                    <select class="eightBtn">
+                        <option>なし</option>
+                        <option>→にスワイプ</option>
+                        <option>←にスワイプ</option>
+                        <option>↑にスワイプ</option>
+                        <option>↓にスワイプ</option>
+
+                        <option>右上のタップ</option>
+                        <option>左上のタップ</option>
+                        <option>右下のタップ</option>
+                        <option>左下のタップ</option>
+                    </select>
+                    <select class="eightBtn">
+                        <option>なし</option>
+                        <option>→にスワイプ</option>
+                        <option>←にスワイプ</option>
+                        <option>↑にスワイプ</option>
+                        <option>↓にスワイプ</option>
+
+                        <option>右上のタップ</option>
+                        <option>左上のタップ</option>
+                        <option>右下のタップ</option>
+                        <option>左下のタップ</option>
+                    </select>
+                    <div id="pull"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var eleString = '';
+        document.getElementById("bars").innerHTML += eleString;
+    </script>
+</body>
+
+</html>

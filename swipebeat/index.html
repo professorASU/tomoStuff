@@ -7,6 +7,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;400&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/94/three.min.js"></script>
+    <script src="./assets/js/zingtouch-master/dist/zingtouch.min.js"></script>
     <style>
         body {
             background: #000;
@@ -25,12 +26,14 @@
             pointer-events: none;
         }
 
-        #cursor {
+        .cursor {
             filter: drop-shadow(0px 0px 4px #fff);
             position: fixed;
             height: 24px;
             top: 10px;
             left: 10px;
+
+            transition: 0.1s;
         }
 
         #horizontalBar {
@@ -111,7 +114,10 @@
 </head>
 
 <body>
-    <img src="./assets/2d/cursorBeta1.png" class="twodasset" id="cursor">
+    <img src="./assets/2d/cursorBeta1.png" class="twodasset cursor" id="rcursor">
+    <img src="./assets/2d/cursorBeta1.png" class="twodasset cursor" id="lcursor">
+    <img src="./assets/2d/cursorBeta1.png" class="twodasset cursor" id="ucursor">
+    <img src="./assets/2d/cursorBeta1.png" class="twodasset cursor" id="dcursor">
     <div id="horizontalBar"></div>
     <div id="verticalBar"></div>
 
@@ -124,6 +130,40 @@
     </div>
 
     <script>
+        //touch controls
+        var zt = new ZingTouch.Region(document.body);
+        zt.bind(document.body, 'swipe', function (e) {
+            console.log(e.detail);
+            var swipeDir = Math.floor(e.detail.data[0].currentDirection);
+            if ((swipeDir <= 45 && swipeDir >= 0) || (swipeDir > 315 && swipeDir < 0)) {
+                //rights
+                swipeLife[0] += 100;
+            } else if ((swipeDir > 45 && swipeDir <= 135)) {
+                //up
+                swipeLife[1] += 100;
+            } else if ((swipeDir > 135 && swipeDir <= 225)) {
+                //left
+                swipeLife[2] += 100;
+            } else if ((swipeDir > 225 && swipeDir <= 315)) {
+                //down
+                swipeLife[3] += 100;
+            }
+        });
+
+        var swipeLife = [0, 0, 0, 0]
+        var cursorOrigin = new Array();
+        function slideCursor(direction) {
+            if (direction == "right") {
+                swipeLife[0] += 10;
+            } else if (direction == "up") {
+                swipeLife[1] += 10;
+            } else if (direction == "left") {
+                swipeLife[2] += 10;
+            } else if (direction == "down") {
+                swipeLife[3] += 10;
+            }
+        }
+
 
         var camera, scene, renderer;
 
@@ -146,7 +186,14 @@
 
         var timerRail = 0;
 
+        //bpm and notes variables
         var bpm = 150;
+
+        var firstFrame = 0;
+        var oldTimer = 0;
+        var newTimer = 0;
+        var timerStock = 0;
+
 
         function init() {
             //initiate
@@ -154,8 +201,19 @@
             camera.position.z = 20;
 
             //initiate 2d assets 
-            document.getElementById("cursor").style.top = (window.innerHeight / 2 - 11) + "px";
-            document.getElementById("cursor").style.left = (window.innerWidth / 2 - 11) + "px";
+            document.getElementById("rcursor").style.top = (window.innerHeight / 2 - 11) + "px";
+            document.getElementById("rcursor").style.left = (window.innerWidth / 2 - 11) + "px";
+
+            document.getElementById("lcursor").style.top = (window.innerHeight / 2 - 11) + "px";
+            document.getElementById("lcursor").style.left = (window.innerWidth / 2 - 11) + "px";
+
+            document.getElementById("ucursor").style.top = (window.innerHeight / 2 - 11) + "px";
+            document.getElementById("ucursor").style.left = (window.innerWidth / 2 - 11) + "px";
+
+            document.getElementById("dcursor").style.top = (window.innerHeight / 2 - 11) + "px";
+            document.getElementById("dcursor").style.left = (window.innerWidth / 2 - 11) + "px";
+            cursorOrigin.push((window.innerWidth / 2 - 11));
+            cursorOrigin.push((window.innerHeight / 2 - 11));
 
             document.getElementById("horizontalBar").style.top = (window.innerHeight / 2 - 5) + "px";
             document.getElementById("horizontalBar").style.left = (window.innerWidth / 2 - 70) + "px";
@@ -275,15 +333,55 @@
         }
 
         function animate(time) {
-
+            var allTime = 60000 / bpm;
+            oldTimer = newTimer;
+            var d = new Date();
+            var n = d.getMilliseconds();
+            newTimer = n;
+            Math.abs(newTimer - oldTimer);
             if (timerRail <= 5) {
                 for (i = 0; i < 16; i++) {
                     framees[i].position.z = frameOrigin[i] + timerRail;
                 }
-                timerRail += 5 / (6000 / bpm);
+                timerRail += 5 / bpm;
             } else {
                 timerRail = 0;
             }
+
+            //temporaly use javascript interval function, on real version use date function
+
+            //right swipe cursor update
+            if (swipeLife[0] > 0) {
+                document.getElementById("rcursor").style.left = (cursorOrigin[0] + 100) + "px";
+                swipeLife[0] -= 1;
+            } else {
+                document.getElementById("rcursor").style.left = cursorOrigin[0] + "px";
+            }
+
+            //up swipe cursor update
+            if (swipeLife[1] > 0) {
+                document.getElementById("ucursor").style.top = (cursorOrigin[1] - 100) + "px";
+                swipeLife[1] -= 1;
+            } else {
+                document.getElementById("ucursor").style.top = cursorOrigin[1] + "px";
+            }
+
+            //left swipe cursor update
+            if (swipeLife[2] > 0) {
+                document.getElementById("lcursor").style.left = (cursorOrigin[0] - 100) + "px";
+                swipeLife[2] -= 1;
+            } else {
+                document.getElementById("lcursor").style.left = cursorOrigin[0] + "px";
+            }
+
+            //down swipe cursor update
+            if (swipeLife[3] > 0) {
+                document.getElementById("dcursor").style.top = (cursorOrigin[1] + 100) + "px";
+                swipeLife[3] -= 1;
+            } else {
+                document.getElementById("dcursor").style.top = cursorOrigin[1] + "px";
+            }
+
 
             // camera.position.z = 10;
             camera.rotation.x = Math.PI * 0;
