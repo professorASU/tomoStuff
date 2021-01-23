@@ -66,7 +66,7 @@
             position: fixed;
             width: 100%;
             left: 0px;
-            bottom: 120px;
+            bottom: 20px;
             color: #fff;
             text-align: center;
             font-size: 30px;
@@ -137,16 +137,16 @@
             var swipeDir = Math.floor(e.detail.data[0].currentDirection);
             if ((swipeDir <= 45 && swipeDir >= 0) || (swipeDir > 315 && swipeDir < 0)) {
                 //rights
-                swipeLife[0] += 100;
+                swipeLife[0] += 10;
             } else if ((swipeDir > 45 && swipeDir <= 135)) {
                 //up
-                swipeLife[1] += 100;
+                swipeLife[1] += 10;
             } else if ((swipeDir > 135 && swipeDir <= 225)) {
                 //left
-                swipeLife[2] += 100;
+                swipeLife[2] += 10;
             } else if ((swipeDir > 225 && swipeDir <= 315)) {
                 //down
-                swipeLife[3] += 100;
+                swipeLife[3] += 10;
             }
         });
 
@@ -343,7 +343,7 @@
                 for (i = 0; i < 16; i++) {
                     framees[i].position.z = frameOrigin[i] + timerRail;
                 }
-                timerRail += 5 / bpm;
+                timerRail += 50 / bpm;
             } else {
                 timerRail = 0;
             }
@@ -378,6 +378,7 @@
             if (swipeLife[3] > 0) {
                 document.getElementById("dcursor").style.top = (cursorOrigin[1] + 100) + "px";
                 swipeLife[3] -= 1;
+                console.log(swipeLife[3]);
             } else {
                 document.getElementById("dcursor").style.top = cursorOrigin[1] + "px";
             }
