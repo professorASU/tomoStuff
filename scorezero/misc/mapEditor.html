@@ -17,6 +17,9 @@
             -ms-user-select: none;
             /* Internet Explorer/Edge */
             user-select: none;
+
+            background: #6e6e6e;
+            font-family: sans-serif;
         }
 
         .topTab {
@@ -29,8 +32,8 @@
 
         .barFour {
             width: 100px;
-            border-top: 1px solid #ff5555;
-            border-bottom: 1px solid #ff5555;
+            border-top: 1px solid #1cffad;
+            border-bottom: 1px solid #1cffad;
         }
 
         .barInd {
@@ -66,11 +69,124 @@
         .eightBtn {
             margin-bottom: 8px;
         }
+
+        #controlBar {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+
+        .controlBarButton {
+            background: #969696;
+            border: none;
+            color: #181818;
+            height: 25px;
+            outline: none;
+            border: 2px solid rgba(0, 0, 0, 0);
+            outline: 2px solid rgba(0, 0, 0, 0);
+        }
+
+        .controlBarButton:focus {
+            border: 2px solid #181818;
+            outline: 2px solid #fff;
+        }
+
+        #bars {
+            border-radius: 4px;
+            border: 3px solid #585b5d;
+            position: absolute;
+            top: 65px;
+            left: 15px;
+            width: 400px;
+            height: 500px;
+            overflow: auto;
+            background: #808080;
+            padding: 10px 10px 10px 10px;
+        }
+
+        select {
+            background: #9d9d9d;
+            color: #181818;
+            border: 2px solid #7b7b7b;
+            outline: 2px solid rgba(0, 0, 0, 0);
+        }
+
+        select:focus {
+            background: #a5a5a5;
+            border: 2px solid #181818;
+            outline: 2px solid #fff;
+        }
+
+        .fillerButton {
+            width: 100px;
+            height: 10px;
+        }
+
+        #fileModal {
+            position: absolute;
+            top: 50px;
+            background: #eeeeee;
+            box-shadow: 0px 1px 2px #181818;
+            width: 200px;
+        }
+
+        .fileModalBtn {
+            background: #c3c3c3;
+            border: none;
+            width: 100%;
+            height: 30px;
+            border-bottom: 1px solid #181818;
+            outline: none;
+        }
+
+        .fileModalBtn:hover {
+            background: #beefff;
+        }
+
+        .fileModalBtn:active {
+            background: #eeeeee;
+        }
+
+        #newProjModal {
+            background: #c3c3c3;
+            position: absolute;
+            left: 20%;
+            top: 40px;
+            width: 60%;
+            height: 300x;
+            overflow: auto;
+            padding: 20px 20px 20px 20px;
+            border: 2px solid #181818;
+            box-shadow: 0px 1px 2px #181818;
+        }
+
+        .modalTitle {
+            margin-top: 0px;
+        }
+
+        .newProjBtn {
+            background: #eeeeee;
+            border: 2px solid #181818;
+            outline: none;
+        }
+
+        .newProjBtn:hover {
+            background: #beefff;
+        }
     </style>
 </head>
 
 <body>
     <div>
+        <div id="controlBar">
+            <button class="controlBarButton" id="fileControlOpenBtn">ファイル</button>
+            <button class="controlBarButton">再生</button>
+            <button class="controlBarButton">停止</button>
+            <button class="controlBarButton">指定した位置から再生</button>
+        </div>
+        <div id="file">
+
+        </div>
         <div id="bars">
             <div>
                 <div class="bar containerA">
@@ -195,9 +311,85 @@
             </div>
         </div>
     </div>
+    <div id="fileModal">
+        <button class="fileModalBtn" id="newProjectBtn">新規作成</button>
+        <button class="fileModalBtn">開く</button>
+        <button class="fileModalBtn">保存</button>
+        <button class="fileModalBtn">プロジェクト設定の変更</button>
+    </div>
+    <div id="newProjModal">
+        <h3 class="modalTitle">プロジェクトを新規作成</h3>
+        <span class="newProjLabel">ファイル名を指定：</span>
+        <input type="number" id="newProjAudName" placeholder="ここに入力">
+        <br>
+        <span class="newProjLabel">BPM:</span>
+        <input type="number" id="newProjBPM" placeholder="ここに入力"><br><br>
+        <button class="newProjBtn" onclick="newProj()">新規作成</button>
+        <button class="newProjBtn" onclick="openModal('newProj')">キャンセル</button>
+    </div>
+
+    <!--system things here-->
+    <audio id="mFileModule"></audio>
+    <audio　id="mFileModule" controls></audio>
+
     <script>
         var eleString = '';
         document.getElementById("bars").innerHTML += eleString;
+
+        var fileModalOpn = true;
+        var newProjModalOpn = true;
+        document.getElementById("fileControlOpenBtn").onclick = function () {
+            openModal("file");
+        }
+
+        /// Check for BlobURL support
+        var blob = window.URL || window.webkitURL;
+        if (!blob) {
+            console.log('Your browser does not support Blob URLs :(');
+        }
+
+        document.getElementById('newProjMFile').addEventListener('change', function (event) {
+
+            console.log('change on input#file triggered');
+            var file = this.files[0],
+                fileURL = blob.createObjectURL(file);
+            console.log(file);
+            console.log('File name: ' + file.name);
+            console.log('File type: ' + file.type);
+            console.log('File BlobURL: ' + fileURL);
+            document.getElementById('mFileModule').src = fileURL;
+            document.getElementById('mFileModule').type = file.type;
+        });
+
+        document.getElementById("newProjectBtn").onclick = function () {
+            openModal("file");
+            openModal("newProj");
+        }
+
+        function newProj() {
+            openModal("newProj");
+            console.log(document.getElementById("newProjMFile").value);
+        }
+
+        function openModal(where) {
+            if (where == "file") {
+                if (fileModalOpn == false) {
+                    document.getElementById("fileModal").style.display = "block";
+                    fileModalOpn = true;
+                } else {
+                    document.getElementById("fileModal").style.display = "none";
+                    fileModalOpn = false;
+                }
+            } else if (where == "newProj") {
+                if (newProjModalOpn == false) {
+                    document.getElementById("newProjModal").style.display = "block";
+                    newProjModalOpn = true;
+                } else {
+                    document.getElementById("newProjModal").style.display = "none";
+                    newProjModalOpn = false;
+                }
+            }
+        }
     </script>
 </body>
 

@@ -98,6 +98,15 @@
             margin-left: auto;
         }
 
+        .sparkle {
+
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            image-rendering: pixelated;
+            filter: drop-shadow(0px 0px 4px #ffffff);
+        }
+
 
         /* .markerCircle {
             width: 20px;
@@ -118,6 +127,9 @@
     <img src="./assets/2d/cursorBeta1.png" class="twodasset cursor" id="lcursor">
     <img src="./assets/2d/cursorBeta1.png" class="twodasset cursor" id="ucursor">
     <img src="./assets/2d/cursorBeta1.png" class="twodasset cursor" id="dcursor">
+
+    <div class="shineEffect"></div>
+
     <div id="horizontalBar"></div>
     <div id="verticalBar"></div>
 
@@ -187,13 +199,13 @@
         var timerRail = 0;
 
         //bpm and notes variables
-        var bpm = 150;
+        var bpm = 128;
+        var timeSignature = 8;
 
         var firstFrame = 0;
         var oldTimer = 0;
         var newTimer = 0;
         var timerStock = 0;
-
 
         function init() {
             //initiate
@@ -245,6 +257,7 @@
             markersGeometry = new THREE.BoxGeometry(0.3, 0.3, 0.1);
             markersMaterial = new THREE.MeshBasicMaterial({ color: 0xeeeeee, wireframe: false });
             var markersid = 0;
+
             for (i = 0; i < 3; i++) {
                 for (o = 0; o < 3; o++) {
                     markersMesh = new THREE.Mesh(markersGeometry, markersMaterial);
