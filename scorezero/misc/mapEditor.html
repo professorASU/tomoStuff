@@ -20,6 +20,8 @@
 
             background: #6e6e6e;
             font-family: sans-serif;
+            width: 865px;
+            height: 605px;
         }
 
         .topTab {
@@ -32,8 +34,9 @@
 
         .barFour {
             width: 100px;
-            border-top: 1px solid #1cffad;
-            border-bottom: 1px solid #1cffad;
+            background: #a5a5a5;
+            border-top: 1px solid #ff4f4f;
+            border-bottom: 1px solid #ff4f4f;
         }
 
         .barInd {
@@ -97,10 +100,11 @@
             position: absolute;
             top: 65px;
             left: 15px;
-            width: 400px;
+            width: 500px;
             height: 500px;
             overflow: auto;
             background: #808080;
+            text-align: center;
             padding: 10px 10px 10px 10px;
         }
 
@@ -173,6 +177,40 @@
         .newProjBtn:hover {
             background: #beefff;
         }
+
+        .previewWindow {
+            position: absolute;
+            top: 64px;
+            left: 550px;
+            width: 292.5px;
+            height: 520px;
+            border-radius: 4px;
+            border: 3px solid #585b5d;
+            background: #000000;
+            overflow: none;
+        }
+
+        #newSection,
+        #deleteSection {
+            background: #c3c3c3;
+            border: 2px solid #181818;
+            outline: none;
+            width: 130px;
+            margin-right: 5px;
+            margin-left: 5px;
+        }
+
+        .sectorE {
+            background: #808080;
+        }
+
+        /* .sectorE:hover {
+            background: #9d9d9d;
+        }
+
+        .sector:active {
+            background: #9d9d9d;
+        } */
     </style>
 </head>
 
@@ -188,129 +226,142 @@
 
         </div>
         <div id="bars">
-            <div>
-                <div class="bar containerA">
-                    <div class="barFour">
-                        <div class="barInd">
-                            <div class="barHalf"></div>
-                        </div>
-                        <div class="barInd">
-                            <div class="barHalf"></div>
-                        </div>
-                        <div class="barInd">
-                            <div class="barHalf"></div>
-                        </div>
-                        <div class="barInd">
-                            <div class="barHalf"></div>
+            <div id="noteParent">
+                <div class="sectorE" onclick="selectSector(this)" id="noteControl1">
+                    <div class="bar containerA">
+                        <div class="barFour">
+                            <div class="barInd">
+                                <div class="barHalf"></div>
+                            </div>
+                            <div class="barInd">
+                                <div class="barHalf"></div>
+                            </div>
+                            <div class="barInd">
+                                <div class="barHalf"></div>
+                            </div>
+                            <div class="barInd">
+                                <div class="barHalf"></div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div id="button" class="containerA">
-                    <span>1/4 notes</span>
-                    <select class="fourBtn">
-                        <option>なし</option>
-                        <option value="rightSwipe">→にスワイプ</option>
-                        <option value="leftSwipe">←にスワイプ</option>
-                        <option value="upSwipe">↑にスワイプ</option>
-                        <option value="downSwipe">↓にスワイプ</option>
+                    <div id="button" class="containerA">
+                        <span>1/4 notes</span>
+                        <div>
+                            <select onchange="updateNoteData(this)" id="note1.1" class="fourBtn">
+                                <option value="0">なし</option>
+                                <option value="5">→にスワイプ</option>
+                                <option value="4">←にスワイプ</option>
+                                <option value="2">↑にスワイプ</option>
+                                <option value="7">↓にスワイプ</option>
 
-                        <option value="rightTopTap">右上のタップ</option>
-                        <option value="leftTopTap">左上のタップ</option>
-                        <option value="rightDownTap">右下のタップ</option>
-                        <option value="leftDownTap">左下のタップ</option>
-                    </select>
-                    <select class="fourBtn">
-                        <option>なし</option>
-                        <option value="rightSwipe">→にスワイプ</option>
-                        <option value="leftSwipe">←にスワイプ</option>
-                        <option value="upSwipe">↑にスワイプ</option>
-                        <option value="downSwipe">↓にスワイプ</option>
+                                <option value="3">右上のタップ</option>
+                                <option value="1">左上のタップ</option>
+                                <option value="8">右下のタップ</option>
+                                <option value="6">左下のタップ</option>
+                            </select>
+                            <select onchange="updateNoteData(this)" id="note1.3" class="fourBtn">
+                                <option value="0">なし</option>
+                                <option value="5">→にスワイプ</option>
+                                <option value="4">←にスワイプ</option>
+                                <option value="2">↑にスワイプ</option>
+                                <option value="7">↓にスワイプ</option>
 
-                        <option value="rightTopTap">右上のタップ</option>
-                        <option value="leftTopTap">左上のタップ</option>
-                        <option value="rightDownTap">右下のタップ</option>
-                        <option value="leftDownTap">左下のタップ</option>
-                    </select>
-                    <select class="fourBtn">
-                        <option>なし</option>
-                        <option value="rightSwipe">→にスワイプ</option>
-                        <option value="leftSwipe">←にスワイプ</option>
-                        <option value="upSwipe">↑にスワイプ</option>
-                        <option value="downSwipe">↓にスワイプ</option>
+                                <option value="3">右上のタップ</option>
+                                <option value="1">左上のタップ</option>
+                                <option value="8">右下のタップ</option>
+                                <option value="6">左下のタップ</option>
+                            </select>
+                            <select onchange="updateNoteData(this)" id="note1.5" class="fourBtn">
+                                <option value="0">なし</option>
+                                <option value="5">→にスワイプ</option>
+                                <option value="4">←にスワイプ</option>
+                                <option value="2">↑にスワイプ</option>
+                                <option value="7">↓にスワイプ</option>
 
-                        <option value="rightTopTap">右上のタップ</option>
-                        <option value="leftTopTap">左上のタップ</option>
-                        <option value="rightDownTap">右下のタップ</option>
-                        <option value="leftDownTap">左下のタップ</option>
-                    </select>
-                    <select class="fourBtn">
-                        <option>なし</option>
-                        <option value="rightSwipe">→にスワイプ</option>
-                        <option value="leftSwipe">←にスワイプ</option>
-                        <option value="upSwipe">↑にスワイプ</option>
-                        <option value="downSwipe">↓にスワイプ</option>
+                                <option value="3">右上のタップ</option>
+                                <option value="1">左上のタップ</option>
+                                <option value="8">右下のタップ</option>
+                                <option value="6">左下のタップ</option>
+                            </select>
+                            <select onchange="updateNoteData(this)" id="note1.7" class="fourBtn">
+                                <option value="0">なし</option>
+                                <option value="5">→にスワイプ</option>
+                                <option value="4">←にスワイプ</option>
+                                <option value="2">↑にスワイプ</option>
+                                <option value="7">↓にスワイプ</option>
 
-                        <option value="rightTopTap">右上のタップ</option>
-                        <option value="leftTopTap">左上のタップ</option>
-                        <option value="rightDownTap">右下のタップ</option>
-                        <option value="leftDownTap">左下のタップ</option>
-                    </select>
-                </div>
-                <div id="button" class="containerB">
-                    <span>1/8 notes</span>
-                    <select class="eightBtn">
-                        <option>なし</option>
-                        <option>→にスワイプ</option>
-                        <option>←にスワイプ</option>
-                        <option>↑にスワイプ</option>
-                        <option>↓にスワイプ</option>
+                                <option value="3">右上のタップ</option>
+                                <option value="1">左上のタップ</option>
+                                <option value="8">右下のタップ</option>
+                                <option value="6">左下のタップ</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="button" class="containerB">
+                        <span>1/8 notes</span>
+                        <div>
+                            <select onchange="updateNoteData(this)" id="note1.2" class="eightBtn">
+                                <option value="0">なし</option>
+                                <option value="5">→にスワイプ</option>
+                                <option value="4">←にスワイプ</option>
+                                <option value="2">↑にスワイプ</option>
+                                <option value="7">↓にスワイプ</option>
 
-                        <option>右上のタップ</option>
-                        <option>左上のタップ</option>
-                        <option>右下のタップ</option>
-                        <option>左下のタップ</option>
-                    </select>
-                    <select class="eightBtn">
-                        <option>なし</option>
-                        <option>→にスワイプ</option>
-                        <option>←にスワイプ</option>
-                        <option>↑にスワイプ</option>
-                        <option>↓にスワイプ</option>
+                                <option value="3">右上のタップ</option>
+                                <option value="1">左上のタップ</option>
+                                <option value="8">右下のタップ</option>
+                                <option value="6">左下のタップ</option>
+                            </select>
+                            <select onchange="updateNoteData(this)" id="note1.4" class="eightBtn">
+                                <option value="0">なし</option>
+                                <option value="5">→にスワイプ</option>
+                                <option value="4">←にスワイプ</option>
+                                <option value="2">↑にスワイプ</option>
+                                <option value="7">↓にスワイプ</option>
 
-                        <option>右上のタップ</option>
-                        <option>左上のタップ</option>
-                        <option>右下のタップ</option>
-                        <option>左下のタップ</option>
-                    </select>
-                    <select class="eightBtn">
-                        <option>なし</option>
-                        <option>→にスワイプ</option>
-                        <option>←にスワイプ</option>
-                        <option>↑にスワイプ</option>
-                        <option>↓にスワイプ</option>
+                                <option value="3">右上のタップ</option>
+                                <option value="1">左上のタップ</option>
+                                <option value="8">右下のタップ</option>
+                                <option value="6">左下のタップ</option>
+                            </select>
+                            <select onchange="updateNoteData(this)" id="note1.6" class="eightBtn">
+                                <option value="0">なし</option>
+                                <option value="5">→にスワイプ</option>
+                                <option value="4">←にスワイプ</option>
+                                <option value="2">↑にスワイプ</option>
+                                <option value="7">↓にスワイプ</option>
 
-                        <option>右上のタップ</option>
-                        <option>左上のタップ</option>
-                        <option>右下のタップ</option>
-                        <option>左下のタップ</option>
-                    </select>
-                    <select class="eightBtn">
-                        <option>なし</option>
-                        <option>→にスワイプ</option>
-                        <option>←にスワイプ</option>
-                        <option>↑にスワイプ</option>
-                        <option>↓にスワイプ</option>
+                                <option value="3">右上のタップ</option>
+                                <option value="1">左上のタップ</option>
+                                <option value="8">右下のタップ</option>
+                                <option value="6">左下のタップ</option>
+                            </select>
+                            <select onchange="updateNoteData(this)" id="note1.8" class="eightBtn">
+                                <option value="0">なし</option>
+                                <option value="5">→にスワイプ</option>
+                                <option value="4">←にスワイプ</option>
+                                <option value="2">↑にスワイプ</option>
+                                <option value="7">↓にスワイプ</option>
 
-                        <option>右上のタップ</option>
-                        <option>左上のタップ</option>
-                        <option>右下のタップ</option>
-                        <option>左下のタップ</option>
-                    </select>
-                    <div id="pull"></div>
+                                <option value="3">右上のタップ</option>
+                                <option value="1">左上のタップ</option>
+                                <option value="8">右下のタップ</option>
+                                <option value="6">左下のタップ</option>
+                            </select>
+                        </div>
+                        <div id="pull"></div>
+                    </div>
                 </div>
             </div>
+            <button id="newSection">追加</button>
+            <button id="deleteSection">削除</button>
         </div>
     </div>
+    <!--idolPrev.html-->
+    <iframe src="" class="previewWindow"></iframe>
+
+
+    <!--modals-->
     <div id="fileModal">
         <button class="fileModalBtn" id="newProjectBtn">新規作成</button>
         <button class="fileModalBtn">開く</button>
@@ -320,7 +371,7 @@
     <div id="newProjModal">
         <h3 class="modalTitle">プロジェクトを新規作成</h3>
         <span class="newProjLabel">ファイル名を指定：</span>
-        <input type="number" id="newProjAudName" placeholder="ここに入力">
+        <input type="text" id="newProjAudName" placeholder="ここに入力">
         <br>
         <span class="newProjLabel">BPM:</span>
         <input type="number" id="newProjBPM" placeholder="ここに入力"><br><br>
@@ -332,6 +383,8 @@
     <audio id="mFileModule"></audio>
     <audio　id="mFileModule" controls></audio>
 
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"
+        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
     <script>
         var eleString = '';
         document.getElementById("bars").innerHTML += eleString;
@@ -342,33 +395,16 @@
             openModal("file");
         }
 
-        /// Check for BlobURL support
-        var blob = window.URL || window.webkitURL;
-        if (!blob) {
-            console.log('Your browser does not support Blob URLs :(');
-        }
-
-        document.getElementById('newProjMFile').addEventListener('change', function (event) {
-
-            console.log('change on input#file triggered');
-            var file = this.files[0],
-                fileURL = blob.createObjectURL(file);
-            console.log(file);
-            console.log('File name: ' + file.name);
-            console.log('File type: ' + file.type);
-            console.log('File BlobURL: ' + fileURL);
-            document.getElementById('mFileModule').src = fileURL;
-            document.getElementById('mFileModule').type = file.type;
-        });
-
         document.getElementById("newProjectBtn").onclick = function () {
             openModal("file");
             openModal("newProj");
         }
 
         function newProj() {
-            openModal("newProj");
-            console.log(document.getElementById("newProjMFile").value);
+            if (document.getElementById("newProjAudName").value != "") {
+                openModal("newProj");
+                console.log(document.getElementById("newProjMFile").value);
+            }
         }
 
         function openModal(where) {
@@ -387,8 +423,90 @@
                 } else {
                     document.getElementById("newProjModal").style.display = "none";
                     newProjModalOpn = false;
+
                 }
             }
+        }
+
+        //note engine
+        var masterNoteLength = 1;
+        var selectedSector = [0];
+        var noteData = [0, 0, 0, 0, 0, 0, 0, 0];
+        var mouseDown = false;
+        var changeFactor = true;
+        var sectionElementString = ['<div class="sectorE" onclick="selectSector(this)" id="noteControl',
+            '"> <div class="bar containerA"> <div class="barFour"> <div class="barInd"> <div class="barHalf"></div> </div> <div class="barInd"> <div class="barHalf"></div> </div> <div class="barInd"> <div class="barHalf"></div> </div> <div class="barInd"> <div class="barHalf"></div> </div> </div> </div> <div id="button" class="containerA"><div> <select onchange="updateNoteData(this)" id="note',
+            '.1" class="fourBtn"> <option value="0">なし</option> <option value="5">→にスワイプ</option> <option value="4">←にスワイプ</option> <option value="2">↑にスワイプ</option> <option value="7">↓にスワイプ</option> <option value="3">右上のタップ</option> <option value="1">左上のタップ</option> <option value="8">右下のタップ</option> <option value="6">左下のタップ</option> </select> <select onchange="updateNoteData(this)" id="note',
+            '.3" class="fourBtn"> <option value="0">なし</option> <option value="5">→にスワイプ</option> <option value="4">←にスワイプ</option> <option value="2">↑にスワイプ</option> <option value="7">↓にスワイプ</option> <option value="3">右上のタップ</option> <option value="1">左上のタップ</option> <option value="8">右下のタップ</option> <option value="6">左下のタップ</option> </select> <select onchange="updateNoteData(this)" id="note',
+            '.5" class="fourBtn"> <option value="0">なし</option> <option value="5">→にスワイプ</option> <option value="4">←にスワイプ</option> <option value="2">↑にスワイプ</option> <option value="7">↓にスワイプ</option> <option value="3">右上のタップ</option> <option value="1">左上のタップ</option> <option value="8">右下のタップ</option> <option value="6">左下のタップ</option> </select> <select onchange="updateNoteData(this)" id="note',
+            '.7" class="fourBtn"> <option value="0">なし</option> <option value="5">→にスワイプ</option> <option value="4">←にスワイプ</option> <option value="2">↑にスワイプ</option> <option value="7">↓にスワイプ</option> <option value="3">右上のタップ</option> <option value="1">左上のタップ</option> <option value="8">右下のタップ</option> <option value="6">左下のタップ</option> </select> </div> </div> <div id="button" class="containerB"><div> <select onchange="updateNoteData(this)" id="note',
+            '.2" class="eightBtn"> <option value="0">なし</option> <option value="5">→にスワイプ</option> <option value="4">←にスワイプ</option> <option value="2">↑にスワイプ</option> <option value="7">↓にスワイプ</option> <option value="3">右上のタップ</option> <option value="1">左上のタップ</option> <option value="8">右下のタップ</option> <option value="6">左下のタップ</option> </select> <select onchange="updateNoteData(this)" id="note',
+            '.4" class="eightBtn"> <option value="0">なし</option> <option value="5">→にスワイプ</option> <option value="4">←にスワイプ</option> <option value="2">↑にスワイプ</option> <option value="7">↓にスワイプ</option> <option value="3">右上のタップ</option> <option value="1">左上のタップ</option> <option value="8">右下のタップ</option> <option value="6">左下のタップ</option> </select> <select onchange="updateNoteData(this)" id="note',
+            '.6" class="eightBtn"> <option value="0">なし</option> <option value="5">→にスワイプ</option> <option value="4">←にスワイプ</option> <option value="2">↑にスワイプ</option> <option value="7">↓にスワイプ</option> <option value="3">右上のタップ</option> <option value="1">左上のタップ</option> <option value="8">右下のタップ</option> <option value="6">左下のタップ</option> </select> <select onchange="updateNoteData(this)" id="note',
+            '.8" class="eightBtn"> <option value="0">なし</option> <option value="5">→にスワイプ</option> <option value="4">←にスワイプ</option> <option value="2">↑にスワイプ</option> <option value="7">↓にスワイプ</option> <option value="3">右上のタップ</option> <option value="1">左上のタップ</option> <option value="8">右下のタップ</option> <option value="6">左下のタップ</option> </select> </div> <div id="pull"></div> </div> </div>']
+        document.getElementById("newSection").onclick = function () {
+            masterNoteLength += 1;
+            selectedSector.push(0);
+            document.getElementById("noteParent").innerHTML += sectionElementString.join(masterNoteLength);
+            for (i = 0; i < 8; i++) {
+                noteData.push(0);
+            }
+            updateNotesSelector();
+        }
+
+        function updateNoteData(ele) {
+            var thisSignatureData = ele.id.split("note")[1].split(".");
+            console.log("below is change data function")
+            console.log(parseInt(thisSignatureData[0]) + parseInt(thisSignatureData[1]) - 2);
+            console.log(parseInt(ele.value));
+            noteData[parseInt(thisSignatureData[0]) + parseInt(thisSignatureData[1]) - 2] = parseInt(ele.value);
+        }
+
+        function selectSector(ele) {
+            var fff = parseInt(ele.id.split("noteControl")[1]) - 1;
+            for (i = 0; i < selectedSector.length; i++) {
+                if (i != fff) {
+                    selectedSector[i] = 0;
+                    document.getElementById("noteControl" + (i + 1)).style.background = "#808080";
+                }
+            }
+
+            if (selectedSector[parseInt(ele.id.split("noteControl")[1]) - 1] == 0) {
+                ele.style.background = "#beefff";
+                selectedSector[parseInt(ele.id.split("noteControl")[1]) - 1] = 1;
+            };
+
+            selectedSector[parseInt(ele.id.split("noteControl")[1]) - 1] = 1;
+        }
+
+        function updateNotesSelector() {
+            for (i = 0; i < noteData.length; i++) {
+                var bSig = Math.floor(i / 8 + 1);
+                var sSig = i % 8 + 1;
+                var selectID = "note" + bSig + "." + sSig;
+                console.log(selectID);
+                console.log(document.getElementById(selectID));
+                var val = noteData[i];
+                var sel = document.getElementById(selectID);
+
+                var opts = sel.options;
+                for (var opt, j = 0; opt = opts[j]; j++) {
+                    if (opt.value == val) {
+                        sel.selectedIndex = j;
+                        break;
+                    }
+                }
+            }
+        }
+
+        window.onmousedown = function () {
+            mouseDown = true;
+            changeFactor = true;
+        }
+
+        window.onmouseup = function () {
+            changeFactor = true;
+            mouseDown = false;
         }
     </script>
 </body>
