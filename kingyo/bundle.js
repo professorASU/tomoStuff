@@ -1,4 +1,10 @@
 var canvas, ctx;
+var rcanvas = document.getElementById("rotator");
+var ctxr = rcanvas.getContext("2d");
+
+//sprite loads
+var headSprite = new Image();
+headSprite.src = "./assets/parts/head.png";
 
 function randf(a, b) {
     return a + Math.random() * (b - a);
@@ -497,14 +503,20 @@ function draw() {
     var r = Math.floor( /* agents[0].brain.latest_reward */ 0 * 200);
     if (r > 255) r = 255;
     if (r < 0) r = 0;
-    ctx.fillStyle = "#120807";
+    ctx.fillStyle = "#444";
     ctx.strokeStyle = "rgb(0,0,0)";
     for (var i = 0, n = agents.length; i < n; i++) {
         var a = agents[i];
 
         // draw agents body
+        document.getElementById("spritehead").style.transform = "rotate(20deg)";
+        var headspritex = document.getElementById("spritehead");
+        ctx.drawImage(headSprite, a.op.x - 12, a.op.y - 12, 25, 25);
+        // drawImageCenter(headSprite, a.op.x - 12, a.op.y - 12, 12, 12, 1, 1)
+
+
         ctx.beginPath();
-        ctx.arc(a.op.x, a.op.y, a.rad, 0, Math.PI * 2, true);
+        ctx.arc(a.op.x, a.op.y, a.rad, 0, Math.PI, true);
         ctx.fill();
         ctx.stroke();
 
@@ -744,3 +756,11 @@ function changeResolution(canvas, scaleFactor) {
 }
 
 changeResolution(document.getElementById('canvas'), window.devicePixelRatio)
+
+function drawImageCenter(image, x, y, cx, cy, scale, rotation) {
+
+    ctxr.clearRect(0, 0, rcanvas.width, rcanvas.height);
+
+    ctxr.rotate(rotation);
+    ctxr.drawImage(image, -cx, -cy);
+} 
