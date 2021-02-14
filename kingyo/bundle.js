@@ -8,13 +8,31 @@ var bodySprite = new Image();
 bodySprite.src = "./assets/parts/body.png"
 
 var tailRootSprite = new Image();
-bodySprite.src = "./assets/parts/tailRoot.png"
+tailRootSprite.src = "./assets/parts/tailRoot.png"
+
+var tailSprite = new Image();
+tailSprite.src = "./assets/parts/tail.png"
+
+var finLSprite = new Image();
+finLSprite.src = "./assets/parts/finL.png";
+
+var finRSprite = new Image();
+finRSprite.src = "./assets/parts/finR.png";
+
+var smallFinLSprite = new Image();
+smallFinLSprite.src = "./assets/parts/smallFinL.png";
+
+var smallFinRSprite = new Image();
+smallFinRSprite.src = "./assets/parts/smallFinR.png";
 
 var woodbck = new Image();
 woodbck.src = "./assets/effects/wood.png";
 
 var effectlyr = new Image();
 effectlyr.src = "./assets/effects/layer.png";
+
+var branchOneSprite = new Image();
+branchOneSprite.src = "./assets/misc/cutleaf01.png";
 
 function randf(a, b) {
     return a + Math.random() * (b - a);
@@ -117,21 +135,21 @@ var util_add_box = function (lst, x, y, w, h) {
 var Item = function (x, y, type) {
     this.p = new Vec(x, y); // position
     this.type = type;
-    this.rad = 10; // default radius
+    this.rad = 3; // default radius
     this.age = 0;
     this.cleanup_ = false;
 }
 
 var World = function () {
     this.agents = [];
-    this.W = canvas.width / window.devicePixelRatio;
-    this.H = canvas.height / window.devicePixelRatio;
+    this.W = canvas.width;
+    this.H = canvas.height;
 
     this.clock = 0;
 
     // set up walls in the world
     this.walls = [];
-    var pad = 0;
+    var pad = 10;
     util_add_box(this.walls, pad, pad, this.W - pad * 2, this.H - pad * 2);
 
     // // adding obstacles
@@ -142,13 +160,13 @@ var World = function () {
 
     // set up food and poison
     this.items = []
-    // for (var k = 0; k < 30; k++) {
-    //     var x = randf(20, this.W - 20);
-    //     var y = randf(20, this.H - 20);
-    //     var t = randi(1, 3); // food or poison (1 and 2)
-    //     var it = new Item(x, y, t);
-    //     this.items.push(it);
-    // }
+    for (var k = 0; k < 30; k++) {
+        var x = randf(20, this.W - 20);
+        var y = randf(20, this.H - 20);
+        var t = randi(1, 3); // food or poison (1 and 2)
+        var it = new Item(x, y, t);
+        this.items.push(it);
+    }
 }
 
 
@@ -293,21 +311,21 @@ World.prototype = {
                 update_items = true;
             }
         }
-        // if (update_items) {
-        //     var nt = [];
-        //     for (var i = 0, n = this.items.length; i < n; i++) {
-        //         var it = this.items[i];
-        //         if (!it.cleanup_) nt.push(it);
-        //     }
-        //     this.items = nt; // swap
-        // }
-        // if (this.items.length < 30 && this.clock % 10 === 0 && randf(0, 1) < 0.25) {
-        //     var newitx = randf(20, this.W - 20);
-        //     var newity = randf(20, this.H - 20);
-        //     var newitt = randi(1, 3); // food or poison (1 and 2)
-        //     var newit = new Item(newitx, newity, newitt);
-        //     this.items.push(newit);
-        // }
+        if (update_items) {
+            var nt = [];
+            for (var i = 0, n = this.items.length; i < n; i++) {
+                var it = this.items[i];
+                if (!it.cleanup_) nt.push(it);
+            }
+            this.items = nt; // swap
+        }
+        if (this.items.length < 30 && this.clock % 10 === 0 && randf(0, 1) < 0.25) {
+            var newitx = randf(20, this.W - 20);
+            var newity = randf(20, this.H - 20);
+            var newitt = randi(1, 3); // food or poison (1 and 2)
+            var newit = new Item(newitx, newity, newitt);
+            this.items.push(newit);
+        }
 
         // agents are given the opportunity to learn based on feedback of their action on environment
         for (var i = 0, n = this.agents.length; i < n; i++) {
@@ -470,7 +488,7 @@ function draw_stats() {
     var ctx = canvas.getContext("2d");
     var W = canvas.width;
     var H = canvas.height;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, 400, 400);
     var a = w.agents[0];
     var b = a.brain;
     var netin = b.last_input_array;
@@ -492,10 +510,11 @@ function draw_stats() {
     }
 }
 // Draw everything
+var spriteAngles = [0, 0, 0, 0, 0];
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     //draw background
-    ctx.drawImage(woodbck, 10, 10, 680, 480);
+    ctx.drawImage(woodbck, 10, 10, 330, 230);
 
 
     ctx.lineWidth = 1;
@@ -518,15 +537,33 @@ function draw() {
     if (r < 0) r = 0;
     ctx.fillStyle = "#444";
     ctx.strokeStyle = "rgb(0,0,0)";
+
+    // draw items
+    ctx.strokeStyle = "rgba(0,0,0,0)";
+    for (var i = 0, n = w.items.length; i < n; i++) {
+        var it = w.items[i];
+        if (it.type === 1) {
+            ctx.fillStyle = "rgb(255, 150, 150)";
+            ctx.beginPath();
+            ctx.arc(it.p.x, it.p.y, it.rad, 0, Math.PI * 2, true);
+            ctx.fill();
+            ctx.stroke();
+        }
+        if (it.type === 2) {
+            ctx.fillStyle = "#ad8439"
+            ctx.drawImage(branchOneSprite, it.p.x - 12, it.p.y - 24, 25, 25);
+        };
+    }
+
     for (var i = 0, n = agents.length; i < n; i++) {
         var a = agents[i];
 
-        // draw agents sight
+        // draw sight
         for (var ei = 0, ne = a.eyes.length; ei < ne; ei++) {
             var e = a.eyes[ei];
             var sr = e.sensed_proximity;
             if (e.sensed_type === -1 || e.sensed_type === 0) {
-                ctx.strokeStyle = "rgb(0,0,0)"; // wall or nothing
+                ctx.strokeStyle = "rgba(0,0,0,0)"; // wall or nothing
             }
             if (e.sensed_type === 1) { ctx.strokeStyle = "rgb(255,150,150)"; } // apples
             if (e.sensed_type === 2) { ctx.strokeStyle = "rgb(150,255,150)"; } // poison
@@ -537,14 +574,13 @@ function draw() {
             ctx.stroke();
         }
 
-        // draw agents body
-        // var xRotMatrix = Math.cos(a.oangle) - Math.sin(a.oangle);
-        // var yRotMatrix = Math.sin(a.oangle) + Math.cos(a.oangle);
-        // var xImageOffset = xRotMatrix * a.op.x;
-        // var yImageOffset = yRotMatrix * a.op.y;
-
-        var IMGoffsetX = -1 * document.getElementById("xOffsetINP").value;
-        var IMGoffsetY = -1 * document.getElementById("yOffsetINP").value;
+        //that snake like effect
+        spriteAngles[5] = spriteAngles[4];
+        spriteAngles[4] = spriteAngles[3];
+        spriteAngles[3] = spriteAngles[2];
+        spriteAngles[2] = spriteAngles[1];
+        spriteAngles[1] = spriteAngles[0];
+        spriteAngles[0] = a.oangle;
 
         //render head
         ctx.translate(a.op.x, a.op.y);
@@ -553,18 +589,53 @@ function draw() {
         ctx.rotate(a.oangle + Math.PI + 0.4);
         ctx.translate(-a.op.x, -a.op.y);
 
-        //render body
+        //render smallFinR
         ctx.translate(a.op.x, a.op.y);
-        ctx.rotate(-1 * a.oangle + Math.PI - 0.4);
-        ctx.drawImage(bodySprite, -10, -1, 25, 25);
-        ctx.rotate(a.oangle + Math.PI + 0.4);
+        ctx.rotate(-1 * spriteAngles[1] + Math.PI - 0.4);
+        ctx.drawImage(smallFinRSprite, 4, 7, 25, 15);
+        ctx.rotate(spriteAngles[1] + Math.PI + 0.4);
+        ctx.translate(-a.op.x, -a.op.y);
+
+        //render smallFinL
+        ctx.translate(a.op.x, a.op.y);
+        ctx.rotate(-1 * spriteAngles[1] + Math.PI - 0.4);
+        ctx.drawImage(smallFinLSprite, -24, 7, 25, 15);
+        ctx.rotate(spriteAngles[1] + Math.PI + 0.4);
         ctx.translate(-a.op.x, -a.op.y);
 
         //render tailRoot
         ctx.translate(a.op.x, a.op.y);
-        ctx.rotate(-1 * a.oangle + Math.PI - 0.4);
-        ctx.drawImage(tailRootSprite, -10, 30, 10, 10);
-        ctx.rotate(a.oangle + Math.PI + 0.4);
+        ctx.rotate(-1 * spriteAngles[3] + Math.PI - 0.4);
+        ctx.drawImage(tailRootSprite, -5, 14, 15, 15);
+        ctx.rotate(spriteAngles[3] + Math.PI + 0.4);
+        ctx.translate(-a.op.x, -a.op.y);
+
+        //render tail
+        ctx.translate(a.op.x, a.op.y);
+        ctx.rotate(-1 * spriteAngles[4] + Math.PI - 0.4);
+        ctx.drawImage(tailSprite, -5, 14, 15, 15);
+        ctx.rotate(spriteAngles[4] + Math.PI + 0.4);
+        ctx.translate(-a.op.x, -a.op.y);
+
+        //render finL
+        ctx.translate(a.op.x, a.op.y);
+        ctx.rotate(-1 * spriteAngles[5] + Math.PI - 0.4);
+        ctx.drawImage(finLSprite, -20, 26, 25, 35);
+        ctx.rotate(spriteAngles[5] + Math.PI + 0.4);
+        ctx.translate(-a.op.x, -a.op.y);
+
+        //render finR
+        ctx.translate(a.op.x, a.op.y);
+        ctx.rotate(-1 * spriteAngles[5] + Math.PI - 0.4);
+        ctx.drawImage(finRSprite, -1, 26, 25, 35);
+        ctx.rotate(spriteAngles[5] + Math.PI + 0.4);
+        ctx.translate(-a.op.x, -a.op.y);
+
+        //render body
+        ctx.translate(a.op.x, a.op.y);
+        ctx.rotate(-1 * spriteAngles[2] + Math.PI - 0.4);
+        ctx.drawImage(bodySprite, -10, -1, 25, 25);
+        ctx.rotate(spriteAngles[2] + Math.PI + 0.4);
         ctx.translate(-a.op.x, -a.op.y);
 
         // drawImageCenter(headSprite, a.op.x - 12, a.op.y - 12, 12, 12, 1, 1)
@@ -576,27 +647,19 @@ function draw() {
         // ctx.stroke();
     }
 
-    // draw items
-    ctx.strokeStyle = "rgb(0,0,0)";
-    for (var i = 0, n = w.items.length; i < n; i++) {
-        var it = w.items[i];
-        if (it.type === 1) ctx.fillStyle = "rgb(255, 150, 150)";
-        if (it.type === 2) ctx.fillStyle = "rgb(150, 255, 150)";
-        ctx.beginPath();
-        ctx.arc(it.p.x, it.p.y, it.rad, 0, Math.PI * 2, true);
-        ctx.fill();
-        ctx.stroke();
-    }
-
     // w.agents[0].brain.visSelf(document.getElementById('brain_info_div'));
 
     //draw light effect
     ctx.globalAlpha = 0.3;
-    ctx.drawImage(effectlyr, 10, 10, 680, 480);
+    ctx.drawImage(effectlyr, 10, 10, 330, 230);
     ctx.globalAlpha = 1;
 
     //draw frames
-
+    ctx.fillStyle = "#ead7b7";
+    ctx.fillRect(0, 0, 10, 250);
+    ctx.fillRect(0, 0, 340, 10);
+    ctx.fillRect(340, 0, 10, 250);
+    ctx.fillRect(0, 240, 340, 10);
 }
 
 // Tick the world
@@ -609,32 +672,18 @@ function tick() {
     }
 }
 
-var simspeed = 2;
+var simspeed = 1;
 
-function goveryfast() {
-    window.clearInterval(current_interval_id);
-    current_interval_id = setInterval(tick, 0);
-    skipdraw = true;
-    simspeed = 3;
-}
-
-function gofast() {
-    window.clearInterval(current_interval_id);
-    current_interval_id = setInterval(tick, 0);
-    skipdraw = false;
-    simspeed = 2;
-}
-
-function gonormal() {
+function fastRender() {
     window.clearInterval(current_interval_id);
     current_interval_id = setInterval(tick, 30);
-    skipdraw = false;
+    skipdraw = true;
     simspeed = 1;
 }
 
-function goslow() {
+function normalRender() {
     window.clearInterval(current_interval_id);
-    current_interval_id = setInterval(tick, 1000);
+    current_interval_id = setInterval(tick, 130);
     skipdraw = false;
     simspeed = 0;
 }
@@ -677,12 +726,13 @@ function start() {
     w = new World();
     w.agents = [new Agent()];
 
-    gofast();
+    normalRender();
 }
 
-function downloadBrain() {
-    var a = window.brain.algorithm.actor.configuration.write()
-    var b = window.brain.algorithm.critic.configuration.write()
+function downloadAgent() {
+    console.log(window.brain.algorithm.actor);
+    var a = window.brain.algorithm.actor.config.write()
+    var b = window.brain.algorithm.critic.config.write()
     var out = new Float64Array(a.length + b.length)
     out.set(a, 0)
     out.set(b, a.length)
@@ -698,13 +748,13 @@ function readBrain(e) {
     reader.onload = function () {
         var buffer = reader.result;
         var joined = new Float64Array(buffer)
-        var a = joined.slice(0, window.brain.algorithm.actor.configuration.countOfParameters)
-        var b = joined.slice(window.brain.algorithm.actor.configuration.countOfParameters)
+        var a = joined.slice(0, window.brain.algorithm.actor.config.countOfParameters)
+        var b = joined.slice(window.brain.algorithm.actor.config.countOfParameters)
 
-        window.brain.algorithm.actor.configuration.read(a)
-        window.brain.algorithm.critic.configuration.read(b)
-        window.brain.algorithm.targetActor.configuration.read(a)
-        window.brain.algorithm.targetCritic.configuration.read(b)
+        window.brain.algorithm.actor.config.read(a)
+        window.brain.algorithm.critic.config.read(b)
+        window.brain.algorithm.targetActor.config.read(a)
+        window.brain.algorithm.targetCritic.config.read(b)
     };
 
     reader.readAsArrayBuffer(input.files[0]);
@@ -802,4 +852,4 @@ function changeResolution(canvas, scaleFactor) {
     ctx.scale(scaleFactor, scaleFactor);
 }
 
-changeResolution(document.getElementById('canvas'), window.devicePixelRatio)
+changeResolution(document.getElementById('canvas'), 0.5)

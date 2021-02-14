@@ -66,6 +66,8 @@
       image-rendering: -webkit-crisp-edges;
       image-rendering: pixelated;
       image-rendering: crisp-edges;
+      width: 330px impo !important;
+      height: 230px impo !important;
     }
 
     body {
@@ -78,26 +80,22 @@
       max-width: 800px;
       width: 100%;
     }
+
+    h3 {
+      margin-left: 120px;
+    }
   </style>
 
 </head>
 
 <body onload="start();">
+  <h3>金魚一号 by とも@SFC21</h3>
   <div id="wrap">
-
-    <!-- <canvas id="vis_canvas" width="350" height="150"></canvas> -->
-    <!-- <canvas id="graph_canvas" width="350" height="150"></canvas><br />
-    <canvas id="net_canvas" width="700" height="200"></canvas><br /> -->
-    <button onclick="gofast()">fast</button>
-    <button onclick="gonormal()">normal</button>
-    <button onclick="goslow()">slow</button>
-    <button onclick="downloadBrain()">save agent</button>
-    <span>load agent:</span>
+    <button onclick="downloadAgent()">金魚を保存</button><br>
+    <span>金魚を開く:</span>
     <input type='file' accept='*/*' onchange='readBrain(event)'><br>
 
     <canvas id="canvas" width="700" height="500"></canvas>
-    <input placeholder="x" value="0" id="xOffsetINP">
-    <input placeholder="y" value="0" id="yOffsetINP">
 
     <script src="bundle.js"></script>
   </div>
