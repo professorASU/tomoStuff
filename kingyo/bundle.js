@@ -1,10 +1,20 @@
 var canvas, ctx;
-var rcanvas = document.getElementById("rotator");
-var ctxr = rcanvas.getContext("2d");
 
 //sprite loads
 var headSprite = new Image();
 headSprite.src = "./assets/parts/head.png";
+
+var bodySprite = new Image();
+bodySprite.src = "./assets/parts/body.png"
+
+var tailRootSprite = new Image();
+bodySprite.src = "./assets/parts/tailRoot.png"
+
+var woodbck = new Image();
+woodbck.src = "./assets/effects/wood.png";
+
+var effectlyr = new Image();
+effectlyr.src = "./assets/effects/layer.png";
 
 function randf(a, b) {
     return a + Math.random() * (b - a);
@@ -121,7 +131,7 @@ var World = function () {
 
     // set up walls in the world
     this.walls = [];
-    var pad = 10;
+    var pad = 0;
     util_add_box(this.walls, pad, pad, this.W - pad * 2, this.H - pad * 2);
 
     // // adding obstacles
@@ -132,13 +142,13 @@ var World = function () {
 
     // set up food and poison
     this.items = []
-    for (var k = 0; k < 30; k++) {
-        var x = randf(20, this.W - 20);
-        var y = randf(20, this.H - 20);
-        var t = randi(1, 3); // food or poison (1 and 2)
-        var it = new Item(x, y, t);
-        this.items.push(it);
-    }
+    // for (var k = 0; k < 30; k++) {
+    //     var x = randf(20, this.W - 20);
+    //     var y = randf(20, this.H - 20);
+    //     var t = randi(1, 3); // food or poison (1 and 2)
+    //     var it = new Item(x, y, t);
+    //     this.items.push(it);
+    // }
 }
 
 
@@ -283,21 +293,21 @@ World.prototype = {
                 update_items = true;
             }
         }
-        if (update_items) {
-            var nt = [];
-            for (var i = 0, n = this.items.length; i < n; i++) {
-                var it = this.items[i];
-                if (!it.cleanup_) nt.push(it);
-            }
-            this.items = nt; // swap
-        }
-        if (this.items.length < 30 && this.clock % 10 === 0 && randf(0, 1) < 0.25) {
-            var newitx = randf(20, this.W - 20);
-            var newity = randf(20, this.H - 20);
-            var newitt = randi(1, 3); // food or poison (1 and 2)
-            var newit = new Item(newitx, newity, newitt);
-            this.items.push(newit);
-        }
+        // if (update_items) {
+        //     var nt = [];
+        //     for (var i = 0, n = this.items.length; i < n; i++) {
+        //         var it = this.items[i];
+        //         if (!it.cleanup_) nt.push(it);
+        //     }
+        //     this.items = nt; // swap
+        // }
+        // if (this.items.length < 30 && this.clock % 10 === 0 && randf(0, 1) < 0.25) {
+        //     var newitx = randf(20, this.W - 20);
+        //     var newity = randf(20, this.H - 20);
+        //     var newitt = randi(1, 3); // food or poison (1 and 2)
+        //     var newit = new Item(newitx, newity, newitt);
+        //     this.items.push(newit);
+        // }
 
         // agents are given the opportunity to learn based on feedback of their action on environment
         for (var i = 0, n = this.agents.length; i < n; i++) {
@@ -481,10 +491,13 @@ function draw_stats() {
         reward_graph.drawSelf(gcanvas);
     }
 }
-
 // Draw everything
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    //draw background
+    ctx.drawImage(woodbck, 10, 10, 680, 480);
+
+
     ctx.lineWidth = 1;
     var agents = w.agents;
 
@@ -508,33 +521,59 @@ function draw() {
     for (var i = 0, n = agents.length; i < n; i++) {
         var a = agents[i];
 
+        // draw agents sight
+        for (var ei = 0, ne = a.eyes.length; ei < ne; ei++) {
+            var e = a.eyes[ei];
+            var sr = e.sensed_proximity;
+            if (e.sensed_type === -1 || e.sensed_type === 0) {
+                ctx.strokeStyle = "rgb(0,0,0)"; // wall or nothing
+            }
+            if (e.sensed_type === 1) { ctx.strokeStyle = "rgb(255,150,150)"; } // apples
+            if (e.sensed_type === 2) { ctx.strokeStyle = "rgb(150,255,150)"; } // poison
+            ctx.beginPath();
+            ctx.moveTo(a.op.x, a.op.y);
+            ctx.lineTo(a.op.x + sr * Math.sin(a.oangle + e.angle),
+                a.op.y + sr * Math.cos(a.oangle + e.angle));
+            ctx.stroke();
+        }
+
         // draw agents body
-        document.getElementById("spritehead").style.transform = "rotate(20deg)";
-        var headspritex = document.getElementById("spritehead");
-        ctx.drawImage(headSprite, a.op.x - 12, a.op.y - 12, 25, 25);
+        // var xRotMatrix = Math.cos(a.oangle) - Math.sin(a.oangle);
+        // var yRotMatrix = Math.sin(a.oangle) + Math.cos(a.oangle);
+        // var xImageOffset = xRotMatrix * a.op.x;
+        // var yImageOffset = yRotMatrix * a.op.y;
+
+        var IMGoffsetX = -1 * document.getElementById("xOffsetINP").value;
+        var IMGoffsetY = -1 * document.getElementById("yOffsetINP").value;
+
+        //render head
+        ctx.translate(a.op.x, a.op.y);
+        ctx.rotate(-1 * a.oangle + Math.PI - 0.4);
+        ctx.drawImage(headSprite, -10, -10, 25, 25);
+        ctx.rotate(a.oangle + Math.PI + 0.4);
+        ctx.translate(-a.op.x, -a.op.y);
+
+        //render body
+        ctx.translate(a.op.x, a.op.y);
+        ctx.rotate(-1 * a.oangle + Math.PI - 0.4);
+        ctx.drawImage(bodySprite, -10, -1, 25, 25);
+        ctx.rotate(a.oangle + Math.PI + 0.4);
+        ctx.translate(-a.op.x, -a.op.y);
+
+        //render tailRoot
+        ctx.translate(a.op.x, a.op.y);
+        ctx.rotate(-1 * a.oangle + Math.PI - 0.4);
+        ctx.drawImage(tailRootSprite, -10, 30, 10, 10);
+        ctx.rotate(a.oangle + Math.PI + 0.4);
+        ctx.translate(-a.op.x, -a.op.y);
+
         // drawImageCenter(headSprite, a.op.x - 12, a.op.y - 12, 12, 12, 1, 1)
 
 
-        ctx.beginPath();
-        ctx.arc(a.op.x, a.op.y, a.rad, 0, Math.PI, true);
-        ctx.fill();
-        ctx.stroke();
-
-        // draw agents sight
-        // for (var ei = 0, ne = a.eyes.length; ei < ne; ei++) {
-        //     var e = a.eyes[ei];
-        //     var sr = e.sensed_proximity;
-        //     if (e.sensed_type === -1 || e.sensed_type === 0) {
-        //         ctx.strokeStyle = "rgb(0,0,0)"; // wall or nothing
-        //     }
-        //     if (e.sensed_type === 1) { ctx.strokeStyle = "rgb(255,150,150)"; } // apples
-        //     if (e.sensed_type === 2) { ctx.strokeStyle = "rgb(150,255,150)"; } // poison
-        //     ctx.beginPath();
-        //     ctx.moveTo(a.op.x, a.op.y);
-        //     ctx.lineTo(a.op.x + sr * Math.sin(a.oangle + e.angle),
-        //         a.op.y + sr * Math.cos(a.oangle + e.angle));
-        //     ctx.stroke();
-        // }
+        // ctx.beginPath();
+        // ctx.arc(a.op.x, a.op.y, a.rad, 0, Math.PI, true);
+        // ctx.fill();
+        // ctx.stroke();
     }
 
     // draw items
@@ -550,6 +589,14 @@ function draw() {
     }
 
     // w.agents[0].brain.visSelf(document.getElementById('brain_info_div'));
+
+    //draw light effect
+    ctx.globalAlpha = 0.3;
+    ctx.drawImage(effectlyr, 10, 10, 680, 480);
+    ctx.globalAlpha = 1;
+
+    //draw frames
+
 }
 
 // Tick the world
@@ -587,7 +634,7 @@ function gonormal() {
 
 function goslow() {
     window.clearInterval(current_interval_id);
-    current_interval_id = setInterval(tick, 200);
+    current_interval_id = setInterval(tick, 1000);
     skipdraw = false;
     simspeed = 0;
 }
@@ -756,11 +803,3 @@ function changeResolution(canvas, scaleFactor) {
 }
 
 changeResolution(document.getElementById('canvas'), window.devicePixelRatio)
-
-function drawImageCenter(image, x, y, cx, cy, scale, rotation) {
-
-    ctxr.clearRect(0, 0, rcanvas.width, rcanvas.height);
-
-    ctxr.rotate(rotation);
-    ctxr.drawImage(image, -cx, -cy);
-} 

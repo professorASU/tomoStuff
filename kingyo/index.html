@@ -62,6 +62,10 @@
   <style type="text/css">
     canvas {
       border: 1px solid white;
+      image-rendering: -moz-crisp-edges;
+      image-rendering: -webkit-crisp-edges;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
     }
 
     body {
@@ -84,17 +88,16 @@
     <!-- <canvas id="vis_canvas" width="350" height="150"></canvas> -->
     <!-- <canvas id="graph_canvas" width="350" height="150"></canvas><br />
     <canvas id="net_canvas" width="700" height="200"></canvas><br /> -->
-
-    <button onclick="goveryfast()">Go very fast</button>
-    <button onclick="gofast()">Go fast</button>
-    <button onclick="gonormal()">Go normal speed</button>
-    <button onclick="goslow()">Go slow</button><br />
-    <button onclick="downloadBrain()">Save</button>
+    <button onclick="gofast()">fast</button>
+    <button onclick="gonormal()">normal</button>
+    <button onclick="goslow()">slow</button>
+    <button onclick="downloadBrain()">save agent</button>
+    <span>load agent:</span>
     <input type='file' accept='*/*' onchange='readBrain(event)'><br>
 
     <canvas id="canvas" width="700" height="500"></canvas>
-    <canvas id="rotator" width="700" height="500"></canvas>
-
+    <input placeholder="x" value="0" id="xOffsetINP">
+    <input placeholder="y" value="0" id="yOffsetINP">
 
     <script src="bundle.js"></script>
   </div>
