@@ -9,7 +9,10 @@
     <style>
         body {
             text-align: center;
-            font-family: 'Montserrat', sans-serif;
+            font-family: sans-serif;
+            background: #f1f1f1;
+            background-image: linear-gradient(to bottom right, #e2e2e2, #f1f1f1);
+            min-height: 100vh;
         }
 
         .projectFrame {
@@ -19,33 +22,95 @@
             border-radius: 6px;
             margin-top: 10px;
             margin-bottom: 10px;
-            border: 1px solid #eee;
             margin-right: auto;
             margin-left: auto;
+            box-shadow: 0px 1px 2px #babbc1;
+        }
+
+        .title {
+            display: inline-block;
+            font-size: 20px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 4px;
+            color: #fff;
+            margin-top: 10px;
+            margin-bottom: 10px;
         }
 
         a {
-            font-size: 20px;
+            display: inline-block;
+            font-size: 15px;
+            text-decoration: none;
+            padding: 5px 10px 5px 10px;
+            border-radius: 4px;
+            color: #181818;
+            background: #fff;
+            width: 80%;
+            margin-top: 10px;
+            margin-bottom: 10px;
+
+        }
+
+        .blueGrad {
+            background: #5980e8;
+            background-image: linear-gradient(to bottom right, #19e4d9, #5e79e8);
+            color: #fff;
+        }
+
+        .pinkGrad {
+            background: #fb6884;
+            background-image: linear-gradient(to bottom right, #f54fa0, #fe7477);
+            color: #fff;
+        }
+
+        .greenGrad {
+            background: #3dc5aa;
+            background-image: linear-gradient(to bottom right, #41e495, #3bb3b6);
+            color: #fff;
+        }
+
+        .orangeGrad {
+            background: #ff9d51;
+            background-image: linear-gradient(to bottom right, #ffdb40, #ff8757);
+            color: #fff;
+        }
+
+        .top {
+            background: #1a262b;
+            color: #fff;
+            position: fixed;
+            margin-top: 0px;
+            font-size: 21px;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            padding: 10px 0px 10px 0px;
+            box-shadow: 0px 1px 2px #babbc1;
         }
     </style>
 </head>
 
 <body>
-    <h1>ともの置き場</h1>
-
-    <div class="projectFrame">
-        <a href="./kingyo/index.html">きんぎょ一号(自主課題)</a><br>
-        <span class="desc">強化学習で動くAI金魚<br>ファイルとして保存可能！USBで持ち歩けるペット！最初のうちは動きキモいけど、うまく学習すると可愛いきんぎょ！</span>
+    <h1 class="top">ともの置き場</h1>
+    <br><br><br>
+    <div class="projectFrame blueGrad">
+        <span class="title">きんぎょ一号(自主課題)</span><br>
+        <span class="desc">強化学習で動くAI金魚<br>ファイルとして保存可能！USBで持ち歩けるペット！最初のうちは動きキモいけど、うまく学習すると可愛いきんぎょ！</span><br>
+        <a href="./kingyo/index.html">開く</a><br>
     </div>
-    <div class="projectFrame">
-        <a href="./DSS-master/index.html">Slide&Flip</a><br>
-        <span class="desc">図形を左右に移動させたり、<br>線対称に移動させる音ゲー</span>
+    <div class="projectFrame pinkGrad">
+        <span class="title">Slide&Flip</span><br>
+        <span class="desc">図形を左右に移動させたり、<br>線対称に移動させる音ゲー</span><br>
+        <a href="./DSS-master/index.html">開く</a><br>
     </div>
-    <div class="projectFrame">
-        <a href="./parkour/index.html">OneWayParkour(開発中)</a><br>
-        <span class="desc">ずっと走るパルクールゲーム</span>
+    <div class="projectFrame greenGrad">
+        <span class="title">OneWayParkour(開発中)</span><br>
+        <span class="desc">ずっと走るパルクールゲーム</span><br>
+        <a href="./parkour/index.html">開く</a><br>
     </div>
-    more coming soon.
+    <hr>
+    more coming soon...
 </body>
 
 </html>
