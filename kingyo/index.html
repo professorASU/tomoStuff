@@ -10,7 +10,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <script src="vis.js"></script>
-  <script src="neurojs-v2.js"></script>
+  <script src="rlFramework.js"></script>
   <script type="text/javascript"
     src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.1/Chart.bundle.min.js"></script>
 
@@ -91,13 +91,16 @@
 <body onload="start();">
   <h3>金魚一号 by とも@SFC21</h3>
   <div id="wrap">
+    <button onclick="exportToCsv()">Excelデータを保存</button>
     <button onclick="downloadAgent()">金魚を保存</button><br>
     <span>金魚を開く:</span>
     <input type='file' accept='*/*' onchange='readBrain(event)'><br>
 
     <canvas id="canvas" width="700" height="500"></canvas>
 
-    <script src="bundle.js"></script>
+    <script src="./js/env.js"></script>
+    <script src="./js/render.js"></script>
+    <script src="./js/ctrl.js"></script>
   </div>
 </body>
 

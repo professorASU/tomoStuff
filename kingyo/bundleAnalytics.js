@@ -491,6 +491,7 @@ function draw_stats() {
     ctx.clearRect(0, 0, 400, 400);
     var a = w.agents[0];
     var b = a.brain;
+    console.log(netin);
     var netin = b.last_input_array;
     ctx.strokeStyle = "rgb(0,0,0)";
     //ctx.font="12px Verdana";
@@ -563,10 +564,10 @@ function draw() {
             var e = a.eyes[ei];
             var sr = e.sensed_proximity;
             if (e.sensed_type === -1 || e.sensed_type === 0) {
-                ctx.strokeStyle = "rgba(0,0,0,0)"; // wall or nothing
+                ctx.strokeStyle = "rgba(0,0,0,0)"; //　餌と枝以外のもの、うるさいから見えなくする
             }
-            if (e.sensed_type === 1) { ctx.strokeStyle = "rgb(255,150,150)"; } // apples
-            if (e.sensed_type === 2) { ctx.strokeStyle = "rgb(150,255,150)"; } // poison
+            if (e.sensed_type === 1) { ctx.strokeStyle = "rgb(255,150,150)"; } // 餌
+            if (e.sensed_type === 2) { ctx.strokeStyle = "rgb(150,255,150)"; } // 枝
             ctx.beginPath();
             ctx.moveTo(a.op.x, a.op.y);
             ctx.lineTo(a.op.x + sr * Math.sin(a.oangle + e.angle),
@@ -667,8 +668,6 @@ function tick() {
     w.tick();
     if (!skipdraw || w.clock % 50 === 0) {
         draw();
-        // draw_stats();
-        // draw_net();
     }
 }
 
@@ -853,3 +852,25 @@ function changeResolution(canvas, scaleFactor) {
 }
 
 changeResolution(document.getElementById('canvas'), 0.5)
+
+var Results = [
+    ["Col1"],
+    ["Data"],
+    ["Data"],
+];
+
+var exportToCsv = function () {
+    var CsvString = "";
+    Results.forEach(function (RowItem, RowIndex) {
+        RowItem.forEach(function (ColItem, ColIndex) {
+            CsvString += ColItem + ',';
+        });
+        CsvString += "\r\n";
+    });
+    CsvString = "data:application/csv," + encodeURIComponent(CsvString);
+    var x = document.createElement("A");
+    x.setAttribute("href", CsvString);
+    x.setAttribute("download", "somedata.csv");
+    document.body.appendChild(x);
+    x.click();
+}
