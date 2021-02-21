@@ -21,7 +21,7 @@ function stoplearn() {
 }
 
 function reload() {
-    w.agents = [new Agent()]; // this should simply work. I think... ;\
+    w.agents = [new Agent(), new Agent()]; // this should simply work. I think... ;\
     reward_graph = new cnnvis.Graph(); // reinit
 }
 
@@ -34,9 +34,14 @@ function start() {
     ctx = canvas.getContext("2d");
 
     w = new World();
-    w.agents = [new Agent()];
-
     normalRender();
+}
+
+function newFish() {
+    w.agents.push(new Agent())
+    for (i = 0; i < 5; i++) {
+        spriteAngles[i].push(0);
+    }
 }
 
 function downloadAgent() {

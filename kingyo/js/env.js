@@ -303,7 +303,7 @@ var Eye = function (angle) {
 var Agent = function () {
 
     // positional information
-    this.p = new Vec(50, 50);
+    this.p = new Vec(randi(50, 300), randi(50, 200)); // init position
     this.op = this.p; // old position
     this.angle = 0; // direction facing
 
@@ -355,13 +355,13 @@ Agent.prototype = {
 
         input_array.push(this.p.x / w.W, this.p.y / w.H)
 
-        // get action from brain
+        // get action
         // var actionix = this.brain.forward(input_array);
         // var actionix = 0
         var action = this.brain.policy(input_array);
-        // this.actionix = actionix; //back this up
+        // this.actionix = actionix; //backup
 
-        // demultiplex into behavior variables
+        // insert demultiplex into behavior variables
         this.rot1 = action[0] * 1;
         this.rot2 = action[1] * 1;
 

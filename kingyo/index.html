@@ -92,8 +92,10 @@
     <button onclick="downloadAgent()">金魚を保存</button><br>
     <span>金魚を開く:</span>
     <input type='file' accept='*/*' onchange='readBrain(event)'><br>
+    <button onclick="newFish()">新しい金魚を召喚</button>
+    <br>
 
-    <canvas id="canvas" width="700" height="500"></canvas>
+    <canvas onclick="esa(event)" id="canvas" width="700" height="500"></canvas>
 
     <script src="./js/env.js"></script>
     <script src="./js/render.js"></script>

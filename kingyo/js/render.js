@@ -35,7 +35,7 @@ var branchOneSprite = new Image();
 branchOneSprite.src = "./assets/misc/cutleaf01.png";
 
 // render
-var spriteAngles = [0, 0, 0, 0, 0];
+var spriteAngles = [[], [], [], [], []];
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     //draw background
@@ -100,67 +100,68 @@ function draw() {
         }
 
         //that snake like effect
-        spriteAngles[5] = spriteAngles[4];
-        spriteAngles[4] = spriteAngles[3];
-        spriteAngles[3] = spriteAngles[2];
-        spriteAngles[2] = spriteAngles[1];
-        spriteAngles[1] = spriteAngles[0];
-        spriteAngles[0] = a.oangle;
+        spriteMicc = spriteAngles[i];
+        spriteMicc[5] = spriteMicc[4];
+        spriteMicc[4] = spriteMicc[3];
+        spriteMicc[3] = spriteMicc[2];
+        spriteMicc[2] = spriteMicc[1];
+        spriteMicc[1] = spriteMicc[0];
+        spriteMicc[0] = a.oangle;
 
         //render head
         ctx.translate(a.op.x, a.op.y);
-        ctx.rotate(-1 * a.oangle + Math.PI - 0.4);
+        ctx.rotate(-1 * spriteMicc[0] + Math.PI - 0.4);
         ctx.drawImage(headSprite, -10, -10, 25, 25);
-        ctx.rotate(a.oangle + Math.PI + 0.4);
+        ctx.rotate(spriteMicc[0] + Math.PI + 0.4);
         ctx.translate(-a.op.x, -a.op.y);
 
         //render smallFinR
         ctx.translate(a.op.x, a.op.y);
-        ctx.rotate(-1 * spriteAngles[1] + Math.PI - 0.4);
+        ctx.rotate(-1 * spriteMicc[1] + Math.PI - 0.4);
         ctx.drawImage(smallFinRSprite, 4, 7, 25, 15);
-        ctx.rotate(spriteAngles[1] + Math.PI + 0.4);
+        ctx.rotate(spriteMicc[1] + Math.PI + 0.4);
         ctx.translate(-a.op.x, -a.op.y);
 
         //render smallFinL
         ctx.translate(a.op.x, a.op.y);
-        ctx.rotate(-1 * spriteAngles[1] + Math.PI - 0.4);
+        ctx.rotate(-1 * spriteMicc[1] + Math.PI - 0.4);
         ctx.drawImage(smallFinLSprite, -24, 7, 25, 15);
-        ctx.rotate(spriteAngles[1] + Math.PI + 0.4);
+        ctx.rotate(spriteMicc[1] + Math.PI + 0.4);
         ctx.translate(-a.op.x, -a.op.y);
 
         //render tailRoot
         ctx.translate(a.op.x, a.op.y);
-        ctx.rotate(-1 * spriteAngles[3] + Math.PI - 0.4);
+        ctx.rotate(-1 * spriteMicc[3] + Math.PI - 0.4);
         ctx.drawImage(tailRootSprite, -5, 14, 15, 15);
-        ctx.rotate(spriteAngles[3] + Math.PI + 0.4);
+        ctx.rotate(spriteMicc[3] + Math.PI + 0.4);
         ctx.translate(-a.op.x, -a.op.y);
 
         //render tail
         ctx.translate(a.op.x, a.op.y);
-        ctx.rotate(-1 * spriteAngles[4] + Math.PI - 0.4);
+        ctx.rotate(-1 * spriteMicc[4] + Math.PI - 0.4);
         ctx.drawImage(tailSprite, -5, 14, 15, 15);
-        ctx.rotate(spriteAngles[4] + Math.PI + 0.4);
+        ctx.rotate(spriteMicc[4] + Math.PI + 0.4);
         ctx.translate(-a.op.x, -a.op.y);
 
         //render finL
         ctx.translate(a.op.x, a.op.y);
-        ctx.rotate(-1 * spriteAngles[5] + Math.PI - 0.4);
+        ctx.rotate(-1 * spriteMicc[5] + Math.PI - 0.4);
         ctx.drawImage(finLSprite, -20, 26, 25, 35);
-        ctx.rotate(spriteAngles[5] + Math.PI + 0.4);
+        ctx.rotate(spriteMicc[5] + Math.PI + 0.4);
         ctx.translate(-a.op.x, -a.op.y);
 
         //render finR
         ctx.translate(a.op.x, a.op.y);
-        ctx.rotate(-1 * spriteAngles[5] + Math.PI - 0.4);
+        ctx.rotate(-1 * spriteMicc[5] + Math.PI - 0.4);
         ctx.drawImage(finRSprite, -1, 26, 25, 35);
-        ctx.rotate(spriteAngles[5] + Math.PI + 0.4);
+        ctx.rotate(spriteMicc[5] + Math.PI + 0.4);
         ctx.translate(-a.op.x, -a.op.y);
 
         //render body
         ctx.translate(a.op.x, a.op.y);
-        ctx.rotate(-1 * spriteAngles[2] + Math.PI - 0.4);
+        ctx.rotate(-1 * spriteMicc[2] + Math.PI - 0.4);
         ctx.drawImage(bodySprite, -10, -1, 25, 25);
-        ctx.rotate(spriteAngles[2] + Math.PI + 0.4);
+        ctx.rotate(spriteMicc[2] + Math.PI + 0.4);
         ctx.translate(-a.op.x, -a.op.y);
     }
 
@@ -175,6 +176,18 @@ function draw() {
     ctx.fillRect(0, 0, 340, 10);
     ctx.fillRect(340, 0, 10, 250);
     ctx.fillRect(0, 240, 340, 10);
+
+    //draw over
+    ctx.clearRect(0, 250, 250, 340)
+    ctx.clearRect(350, 0, 340, 340);
+}
+
+function esa(event) {
+    var x = event.clientX;
+    var y = event.clientY;
+    var t = 3; // food or poison (1 and 2)
+    var it = new Item(x, y, t);
+    w.items.push(it);
 }
 
 // Tick the world
