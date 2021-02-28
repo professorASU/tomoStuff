@@ -4,7 +4,7 @@
 
 金魚と他に暇さえあれば作ってるもの（公開してるものは）[ここから](https://tomocode.github.io/tomoStuff)開けます
 
-金魚のソースコードは["Releases"]()でZIP化してるので、そこでダウンロードしてください。
+金魚のソースコードは["Releases"](https://github.com/tomocode/tomoStuff/releases)でZIP化してるので、そこでダウンロードしてください。
 
 ＋＋＋＋＋
 
