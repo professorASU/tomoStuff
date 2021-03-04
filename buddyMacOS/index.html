@@ -2,15 +2,19 @@
 <html>
 
 <head>
-    <title>buddy</title>
+    <title>buddy launcher</title>
     <meta name="viewport" content="width=device-width, user-scalable=no">
-    <style>
-
-    </style>
 </head>
 
 <body>
-    macOS version in development...
+    <button id="launch">launch bddy 0.1</button>
+    <script>
+        document.getElementById("launch").onclick = function () {
+            window.open("./bb.html", "_blank",
+                "directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,top=0,left=0,width=250,height=120");
+            close();
+        }
+    </script>
 </body>
 
 </html>
