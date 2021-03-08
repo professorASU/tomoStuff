@@ -441,8 +441,8 @@
 
             function animate(time) {
 
-                mesh.rotation.x = time * 0.0005;
-                mesh.rotation.y = time * 0.001;
+                mesh.rotation.x = time * 0.001;
+                mesh.rotation.y = time * 0.002;
 
                 renderer.render(scene, camera);
                 requestAnimationFrame(animate);
