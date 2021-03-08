@@ -400,10 +400,20 @@
             openModal("newProj");
         }
 
+        //project settings variable
+        var projAudioPlacement = "";
+        var projBPM = 120;
+
         function newProj() {
             if (document.getElementById("newProjAudName").value != "") {
                 openModal("newProj");
-                console.log(document.getElementById("newProjMFile").value);
+                projBPM = parseInt(document.getElementById("newProjBPM"));
+                projAudioPlacement = document.getElementById("newProjAudName");
+                alert("新しいプロジェクトが作成されました");
+
+                //clear both text boxes
+                document.getElementById("newProjBPM").value = "";
+                document.getElementById("newProjAudName").value = "";
             }
         }
 
@@ -456,10 +466,7 @@
 
         function updateNoteData(ele) {
             var thisSignatureData = ele.id.split("note")[1].split(".");
-            console.log("below is change data function")
-            console.log(parseInt(thisSignatureData[0]) + parseInt(thisSignatureData[1]) - 2);
-            console.log(parseInt(ele.value));
-            noteData[parseInt(thisSignatureData[0]) + parseInt(thisSignatureData[1]) - 2] = parseInt(ele.value);
+            noteData[(parseInt(thisSignatureData[0]) * 8 + parseInt(thisSignatureData[1]) - 2) - 7] = parseInt(ele.value);
         }
 
         function selectSector(ele) {
@@ -484,8 +491,6 @@
                 var bSig = Math.floor(i / 8 + 1);
                 var sSig = i % 8 + 1;
                 var selectID = "note" + bSig + "." + sSig;
-                console.log(selectID);
-                console.log(document.getElementById(selectID));
                 var val = noteData[i];
                 var sel = document.getElementById(selectID);
 

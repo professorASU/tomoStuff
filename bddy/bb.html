@@ -89,12 +89,12 @@
                 var ward = cont.split(" ");
                 if (ward.indexOf("buddy") != -1) {
                     var hit = 0;
-                    for (i = 0; i < this.keys.length; i++)
-                        if (ward.indexOf(keys[i]) != -1) {
+                    for (i = 0; i < this.trigKeys.length; i++)
+                        if (ward.indexOf(this.trigKeys[i]) != -1) {
                             hit += 1;
-                            actionsSequence = actionCode.split();
+                            actionsSequence = this.actionCode[i].split("");
                             for (p = 0; p < actionsSequence.length; p++) {
-                                eval(actionsSequence[p].split("val").join(ward[ward.indexOf(ward.indexOf(keys[i]) + paramKeyType)]));
+                                eval(actionsSequence[p].split("val").join(ward[ward.indexOf(ward.indexOf(keys[i]) + this.paramKeyType[p])]));
                             }
                         }
 
