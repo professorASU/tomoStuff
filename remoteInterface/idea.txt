@@ -1,0 +1,4 @@
+powered with Raspberry Pi, trying to make see through headset interface
+
+research memos:
+https://www.youtube.com/watch?v=RxQ4GFfPJFo
