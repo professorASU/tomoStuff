@@ -48,6 +48,16 @@
             height: 120px;
             overflow: hidden;
         }
+
+        #console {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            background: #242424;
+            opacity: 0.7;
+        }
     </style>
 </head>
 
@@ -80,7 +90,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/94/three.min.js"></script>
 
     <!--the brain-->
-    <script src="./bddy.edit.js"></script>
+    <script src="./bddy.kai.js"></script>
 
     <!--speaking-->
     <script>
@@ -383,7 +393,7 @@
     </script>
 
     <!--the visuals-->
-    <script>
+    <!-- <script>
         var camera, scene, renderer;
         var geometry, material, mesh;
 
@@ -421,9 +431,23 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
         }
 
+
+
         init();
         requestAnimationFrame(animate);
-    </script>
+    </script> -->
+
+    <!--the console-->
+    <div id="console" style="display: none">
+        <form action="javascript:sendCommand()">
+            <input id="userInputEl" placeholder=">">
+        </form>
+    </div>
+
+    <!--the natural langauge decompiler-->
+    <div>
+
+    </div>
 </body>
 
 </html>

@@ -1,0 +1,10 @@
+store everything in memory.
+
+{
+    actionBlock : 0,
+    form : string,
+    refer : string
+}
+
+make language mapping tool somewhere...
+and make a custom console

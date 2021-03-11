@@ -98,6 +98,8 @@ var bddy = {
             for (i = 0; i < ward.length; i++) {
                 ward[i]
             }
+
+
             //ask if there are next step
 
         }
@@ -111,8 +113,8 @@ var bddy = {
     paramKeyType: [1], //1: after, 2: before, 3: none
     paramType: [0], // 0:url
     actionCode: [0],
-    actionKeys: ["open", "reload", "date", "millisecond"],
-    actionBlocks: ["window.open('val')", "location.reload()", "!define! new Date"],
+    actionKeys: ["open"], //this too
+    actionBlocks: ["window.open('val')"],　//this is really stupid actually
     defineHolder: new Array(),
     transKey: ["to"],
     transKeyType: [0], //simply forward=0, or refer to something=?? (this is gonna be a challenge)
@@ -144,10 +146,4 @@ var bddy = {
             }
         }
     }
-}
-
-// bundle of values and functions supporting bddy, mainly on coding new protocols
-var bddyOverwatch = {
-    sequenceStepCount: 0,
-    codeType: 0 // keys: 0=sequence, 1=code module (actionBlocks)
 }
