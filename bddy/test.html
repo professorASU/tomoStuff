@@ -4,9 +4,93 @@
 <head>
     <title>BDDY Test</title>
     <meta name="viewport" content="width=device-width, user-scalable=no">
+    <style>
+        #bddyConsole {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 500px;
+            height: 300px;
+            background: #fff;
+            box-shadow: 0px 0px 2px #888;
+            overflow: auto;
+        }
+
+        #bddyCloseButton {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .learnWordPort {
+            background: #eee;
+            padding: 10px 10px 10px 10px;
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 
 <body>
+    <!--build console here-->
+    <div id='bddyConsole'>
+        <button id="bddyCloseButton">x</button>
+        <h3>language</h3>
+        <!--submit long paragraph of news, or anything here. it'll break them down to sentences to words, and asks you to sort em out-->
+        <div class="learnWordPort">
+            <span id="bddySentencePort"></span><br>
+            <span id="bddyWordPort"></span><br>
+            <select id="bddyWordType">
+                <option value="0">target (person)</option>
+                <option value="1">action</option>
+                <option value="2">target (action)</option>
+                <option value="3">transition</option>
+            </select><br>
+            <input placeholder="target to">
+            <br><br>
+            <textarea id="bddyLongText" placeholder="enter sentence(s) to learn"></textarea><br>
+            <button id="bddySubmitLongText">submit</button>
+            <!--module script draft for this area-->
+            <script>
+                var bddyLearnModule = {
+                    wordIndex: 0,
+                    sentenceIndex: 0,
+                    throwSent: function (sente) {
+                        //first split to sentences
+                        var sentences = sente.split(".");
+                        for (i = 0; i < sentences.length; i++) {
+                            this.wordPD.push(sentence[i].split(" "));
+                        }
+                    },
+                    wordPD: new Array(),
+                    newWordInspect: function () {
+
+
+                        //end, start next que
+                        this.wordIndex += 1;
+                        if ((this.wordIndex + 1) > wordPd[this.sentenceIndex].length) {
+                            this.wordIndex = 0;
+                            this.sentenceIndex += 1;
+                        }
+                    }
+                }
+
+                document.getElementById("bddySubmitLongText").onclick = function () {
+                    //get the sentence
+                    var sente = document.getElementById("bddyLongText").value;
+                    bddyLearnModule.throwSent(sente);
+                }
+
+                document.getElementById("bddyCloseButton").onclick = function () {
+                    document.getElementById("bddyConsole").style.display = "none";
+                }
+            </script>
+
+        </div>
+        <h3>code</h3>
+        <h3>network</h3>
+    </div>
     <script src="bddy.kai.js"></script>
 </body>
 

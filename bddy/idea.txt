@@ -1,10 +1,4 @@
-store everything in memory.
-
-{
-    actionBlock : 0,
-    form : string,
-    refer : string
-}
-
 make language mapping tool somewhere...
 and make a custom console
+
+i want to make it so that from some-point on, it will guess and categorize everything on its own, based on grammer categories.

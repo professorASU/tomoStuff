@@ -1,0 +1,5 @@
+var bddyConsole = {
+    open: function () {
+
+    }
+}
