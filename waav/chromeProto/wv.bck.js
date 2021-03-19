@@ -1,0 +1,5 @@
+let switchHandlerPre = true;
+
+chrome.runtime.onInstalled.addListener(() => {
+    chrome.storage.sync.set({ switchHandlerPre });
+});

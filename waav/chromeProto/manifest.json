@@ -1,0 +1,17 @@
+{
+    "name": "waav.me",
+    "description": "Add a voice controlled assistant to any websites.",
+    "version": "0.1",
+    "manifest_version": 3,
+    "background": {
+        "service_worker": "wv.bck.js"
+    },
+    "permissions": [
+        "storage",
+        "activeTab",
+        "scripting"
+    ],
+    "action": {
+        "default_popup": "ui.html"
+    }
+}

@@ -1,0 +1,5 @@
+var waav = {
+    throw: function () {
+
+    }
+}

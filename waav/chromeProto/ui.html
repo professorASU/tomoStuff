@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="button.css">
+    <style>
+        body {
+            margin: 0;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .logo {
+            image-rendering: pixelated;
+            position: fixed;
+            top: 30px;
+            left: 35px;
+            height: 25px;
+        }
+
+        img {
+            /* user-drag: none; */
+            user-select: none;
+            -moz-user-select: none;
+            -webkit-user-drag: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+        }
+
+        #settingsInterface {
+            display: none;
+        }
+
+        .switch {
+            position: fixed;
+            top: 80px;
+            left: 50px;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+            box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.4);
+        }
+
+        input:checked+.slider {
+            background-color: #9d9bf6;
+        }
+
+        input:focus+.slider {
+            box-shadow: 0 0 1px #9d9bf6;
+        }
+
+        input:checked+.slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+
+        #master {
+            background: #2d3e51;
+            width: 200px;
+            height: 140px;
+            background-image: linear-gradient(#5451ea, #4038d0);
+        }
+
+        /* .masterDarkmode {
+            background: #2d3e51;
+        } */
+
+        #settingBtn {
+            position: fixed;
+            top: 80px;
+            left: 120px;
+            padding: 0;
+            border: none;
+            background: transparent;
+            opacity: 0.6;
+            -webkit-transition: .4s;
+            transition: .4s;
+            transform: rotate(0deg);
+            outline: none;
+        }
+
+        #settingBtn:hover {
+            opacity: 0.9;
+            -webkit-transition: .4s;
+            transition: .4s;
+            transform: rotate(50deg);
+        }
+
+        .settingimg {
+            height: 30px;
+        }
+
+        .sliderShadowLayer {
+            position: fixed;
+            top: 80px;
+            left: 50px;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+            box-shadow: inset 0px 0px 3px #000;
+            border-radius: 30px;
+            pointer-events: none;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div id="master">
+        <div id="mainInterface">
+            <img src="./assets/waavLogoFF.png" class="logo">
+            <label class="switch">
+                <input type="checkbox" id="elementCheck">
+                <span class="slider round"></span>
+            </label>
+            <div class="sliderShadowLayer"></div>
+            <button id="settingBtn"><img class="settingimg" src="./assets/settings.png"></button>
+        </div>
+        <div id="settingsInterface"></div>
+    </div>
+    <script src="./local/worker.js"></script>
+</body>
+
+</html>
