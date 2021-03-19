@@ -43,7 +43,17 @@ function manageWaavElement() {
     chrome.storage.sync.get("switchHandlerPre", ({ switchHandlerPre }) => {
         if (switchHandlerPre) {
             //it works add the element
-            alert("wow");
+            // <div id="waavElementA1C"><div id="waveringW"></div></div >
+            var waavModuleElement = document.createElement("DIV");
+            waavModuleElement.id = "waavElementA1C";
+            var waveringModuleW = document.createElement("waveringW");
+            waveringModuleW.id = "waveringW";
+            var waavModuleStylesheet = document.createElement("LINK");
+            waavModuleStylesheet.rel = "stylesheet";
+            waavModuleStylesheet.href = "https://tomocode.github.io/tomoStuff/waav/chromeProto/semiLocal/module.css";
+            waavModuleElement.appendChild(waveringModuleW);
+            document.body.appendChild(waavModuleElement);
+            document.body.appendChild(waavModuleStylesheet);
         }
     })
 }
