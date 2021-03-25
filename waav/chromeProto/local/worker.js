@@ -26,46 +26,32 @@ chrome.storage.sync.get("switchHandlerPre", ({ switchHandlerPre }) => {
 // }
 
 // the ui/ux interface stuff
-let settingBtn = document.getElementById("settingBtn");
-let elementCheck = document.getElementById("elementCheck");
+
+//elements
+var launchbtn = document.getElementById("launchbtn");
+var checkbtn = document.getElementById("checkbtn");
+var loadbtn = document.getElementById("loadbtn");
+
+//variables holding important values
+//status : 0=nothing 1=loading 2=done
+var statusHandler = 0
+
+
 let displayMode = 0;
 
-elementCheck.addEventListener("click", async () => {
-    let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+launchbtn.addEventListener("click", async () => {
+    //ui sciript and scan
+    launchbtn.style.display = "none";
+    loadbtn.style.display = "inline-block";
+    statusHandler = 1;
 
+    let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
     chrome.scripting.executeScript({
         target: { tabId: tab.id },
-        function: manageWaavElement,
+        function: initWaav
     });
 });
 
-function manageWaavElement() {
-    chrome.storage.sync.get("switchHandlerPre", ({ switchHandlerPre }) => {
-        if (switchHandlerPre) {
-            //it works add the element
-            // <div id="waavElementA1C"><div id="waveringW"></div></div >
-            var waavModuleElement = document.createElement("DIV");
-            waavModuleElement.id = "waavElementA1C";
-            var waveringModuleW = document.createElement("waveringW");
-            waveringModuleW.id = "waveringW";
-            var waavModuleStylesheet = document.createElement("LINK");
-            waavModuleStylesheet.rel = "stylesheet";
-            waavModuleStylesheet.href = "https://tomocode.github.io/tomoStuff/waav/chromeProto/semiLocal/module.css";
-            waavModuleElement.appendChild(waveringModuleW);
-            document.body.appendChild(waavModuleElement);
-            document.body.appendChild(waavModuleStylesheet);
-        }
-    })
-}
+function initWaav() {
 
-settingBtn.addEventListener("click", async () => {
-    if (displayMode == 0) {
-        displayMode = 1;
-        document.getElementById("settingsInterface").style.display = "block";
-        document.getElementById("mainInterface").style.display = "none'"
-    } else {
-        displayMode = 0;
-        document.getElementById("mainInterface").style.display = "block";
-        document.getElementById("settingsInterface").style.display = "none'"
-    }
-});
+}

@@ -2,59 +2,53 @@
 <html>
 
 <head>
-    <title>element platground</title>
+    <title>element playground</title>
     <meta name="viewport" content="width=device-width, user-scalable=no">
     <style>
-        #waavElementA1C {
+        body {
+            margin: 0;
+        }
+
+        iframe {
+            border: none;
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.5);
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background-image: linear-gradient(#5b5af5, #1e0ea5);
-
-            border: 0px solid #5b5af5;
-            -webkit-transition: .4s;
-            transition: .4s;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
         }
 
-        /* #waavElementA1C:hover {
-            width: 30px;
-            height: 30px;
-        } */
-
-        #wave {
-            width: 26px;
-            height: 26px;
-            border: 7px solid #fff;
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: transparent;
+        .waavModuler {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: #fff;
             border-radius: 50%;
-            filter: drop-shadow(0px 0px 2px #fff);
-            pointer-events: none;
+            box-shadow: 0px 0px 2px #000;
+            -webkit-transition: .2s;
+            transition: .2s;
         }
 
-        .lighterWave {
-            border: 7px solid #65c6fb;
+        .waavFullscreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: 2147483647;
+            background: rgba(244, 244, 244, 0.9);
+            box-shadow: 0px 0px 0px #000;
         }
     </style>
 </head>
 
 <body>
+    <!--test stuff window-->
+    <iframe class="testSite" src="https://developer.chrome.com/docs/extensions/reference/storage/"></iframe>
     <!--element string to be implemented-->
-    <div id="waavElementA1C">
-        <div id="waveringW"></div>
-    </div>
-    <script>
-        // let waavElement = document.getElementById("waavElementA1C");
-        // waavElement.addEventListener("click", async () => {
-
-        // });
-    </script>
+    <div class="waavModuler"></div>
 </body>
 
 </html>

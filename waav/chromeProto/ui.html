@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <link rel="stylesheet" href="button.css">
+    <title>waav client</title>
     <style>
         body {
             margin: 0;
@@ -12,14 +12,12 @@
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
+            background: #eee;
         }
 
         .logo {
             image-rendering: pixelated;
-            position: fixed;
-            top: 30px;
-            left: 35px;
-            height: 25px;
+            height: 13px;
         }
 
         img {
@@ -35,74 +33,10 @@
             display: none;
         }
 
-        .switch {
-            position: fixed;
-            top: 80px;
-            left: 50px;
-            display: inline-block;
-            width: 60px;
-            height: 34px;
-        }
-
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            -webkit-transition: .4s;
-            transition: .4s;
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 26px;
-            width: 26px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            -webkit-transition: .4s;
-            transition: .4s;
-            box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.4);
-        }
-
-        input:checked+.slider {
-            background-color: #9d9bf6;
-        }
-
-        input:focus+.slider {
-            box-shadow: 0 0 1px #9d9bf6;
-        }
-
-        input:checked+.slider:before {
-            -webkit-transform: translateX(26px);
-            -ms-transform: translateX(26px);
-            transform: translateX(26px);
-        }
-
-        /* Rounded sliders */
-        .slider.round {
-            border-radius: 34px;
-        }
-
-        .slider.round:before {
-            border-radius: 50%;
-        }
-
         #master {
-            background: #2d3e51;
+            background: #fff;
             width: 200px;
-            height: 140px;
-            background-image: linear-gradient(#5451ea, #4038d0);
+            height: 120px;
         }
 
         /* .masterDarkmode {
@@ -141,9 +75,100 @@
             display: inline-block;
             width: 60px;
             height: 34px;
-            box-shadow: inset 0px 0px 3px #000;
+            /* box-shadow: inset 0px 0px 3px #000; */
             border-radius: 30px;
             pointer-events: none;
+        }
+
+        .iconWrap {
+            background-image: linear-gradient(to bottom right, #c949a4, #3c86f4);
+            position: fixed;
+            /* top: 23px; */
+            width: 150px;
+            height: 68px;
+            top: 15px;
+            left: 15px;
+            padding: 13px 10px 10px 10px;
+            border-radius: 12px;
+            box-shadow: 0px 2px 3px #00000069;
+        }
+
+        .uibtn {
+            border: none;
+            color: #24292e;
+            font-weight: bold;
+            padding: 7px 0px 4px 6px;
+            border-radius: 12px;
+            outline: none;
+            width: 150px;
+            position: fixed;
+            top: 56px;
+            left: 26px;
+            overflow: hidden;
+            filter: brightness(1);
+            opacity: 0.9;
+        }
+
+        #launchbtn {
+            background: #fff;
+        }
+
+        #loadbtn {
+            background: #fff;
+            height: 36px;
+            display: none;
+        }
+
+        #launchbtn:active {
+            filter: brightness(0.9);
+        }
+
+        .uibtnicon {
+            height: 22px;
+            opacity: 0.9;
+            filter: blur(0px);
+            -webkit-transition: .2s;
+            transition: .2s;
+            filter: blur(0px);
+            /*8px*/
+        }
+
+        #checkbtn {
+            background: #4dda64;
+            display: none;
+        }
+
+        .lds-dual-ring {
+            position: absolute;
+            top: -14px;
+            left: 40px;
+            display: inline-block;
+            width: 80px;
+            height: 80px;
+            -ms-transform: scale(0.5, 0.5);
+            -webkit-transform: scale(0.5, 0.5);
+            transform: scale(0.5, 0.5);
+        }
+
+        .lds-dual-ring:after {
+            content: " ";
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 6px solid #24292e;
+            border-color: #24292e transparent #24292e transparent;
+            animation: lds-dual-ring 0.8s linear infinite;
+        }
+
+        @keyframes lds-dual-ring {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
     </style>
 
@@ -152,13 +177,17 @@
 <body>
     <div id="master">
         <div id="mainInterface">
-            <img src="./assets/waavLogoFF.png" class="logo">
-            <label class="switch">
-                <input type="checkbox" id="elementCheck">
-                <span class="slider round"></span>
-            </label>
+            <div class="iconWrap">
+                <img src="./assets/waavLogoFF.png" class="logo">
+            </div>
+            <button class="uibtn" id="launchbtn"><img class="uibtnicon" id="playicon"
+                    src="./assets/playButton.png"></button>
+            <button class="uibtn" id="checkbtn"><img class="uibtnicon" id="checkicon" src="./assets/check.png"></button>
+            <button class="uibtn" id="loadbtn">
+                <div class="lds-dual-ring">
+                </div>
+            </button>
             <div class="sliderShadowLayer"></div>
-            <button id="settingBtn"><img class="settingimg" src="./assets/settings.png"></button>
         </div>
         <div id="settingsInterface"></div>
     </div>
