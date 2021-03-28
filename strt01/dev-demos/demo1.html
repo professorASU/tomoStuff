@@ -5,20 +5,29 @@
     <title>three.js webgl - multiple views</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-    <link type="text/css" rel="stylesheet" href="main.css">
+    <link type="text/css" rel="stylesheet" href="./assets/library/three.js-r126/examples/main.css">
     <script src="./assets/library/three.js-r126/build/three.min.js"></script>
-    <script src="../assets/library/three.js-r126/jsm/libs/stats.module.js"></script>
+    <style>
+        #sightbar {
+            width: 6px;
+            height: 500px;
+            position: fixed;
+            border-radius: 10px;
+            top: 20px;
+            left: 100px;
+            background: #fff;
+            box-shadow: 0px 0px 5px #fff;
+        }
+    </style>
 </head>
 
 <body>
 
     <div id="container"></div>
-    <div id="info"><a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> - multiple views - webgl
-    </div>
+    <div id="sightbar"></div>
+
 
     <script type="module">
-
-        let stats;
 
         let scene, renderer;
 
@@ -48,32 +57,15 @@
                 left: 0.5,
                 bottom: 0,
                 width: 0.5,
-                height: 0.5,
-                background: new THREE.Color(0.7, 0.5, 0.5),
-                eye: [0, 1800, 0],
-                up: [0, 0, 1],
-                fov: 45,
-                updateCamera: function (camera, scene, mouseX) {
-
-                    camera.position.x -= mouseX * 0.05;
-                    camera.position.x = Math.max(Math.min(camera.position.x, 2000), - 2000);
-                    camera.lookAt(camera.position.clone().setY(0));
-
-                }
-            },
-            {
-                left: 0.5,
-                bottom: 0.5,
-                width: 0.5,
-                height: 0.5,
-                background: new THREE.Color(0.5, 0.7, 0.7),
-                eye: [1400, 800, 1400],
+                height: 1.0,
+                background: new THREE.Color(0.5, 0.5, 0.7),
+                eye: [0, 300, 1800],
                 up: [0, 1, 0],
-                fov: 60,
+                fov: 30,
                 updateCamera: function (camera, scene, mouseX) {
 
-                    camera.position.y -= mouseX * 0.05;
-                    camera.position.y = Math.max(Math.min(camera.position.y, 1600), - 1600);
+                    camera.position.x += mouseX * 0.05;
+                    camera.position.x = Math.max(Math.min(camera.position.x, 2000), - 2000);
                     camera.lookAt(scene.position);
 
                 }
@@ -204,9 +196,6 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
             container.appendChild(renderer.domElement);
 
-            stats = new Stats();
-            container.appendChild(stats.dom);
-
             document.addEventListener('mousemove', onDocumentMouseMove);
 
         }
@@ -229,13 +218,16 @@
 
             }
 
+            //sightbar position update
+            document.getElementById("sightbar").style.height = (window.innerHeight - 40) + "px";
+            document.getElementById("sightbar").style.left = (window.innerWidth / 2 - 3) + "px";
+
+
         }
 
         function animate() {
 
             render();
-            stats.update();
-
             requestAnimationFrame(animate);
 
         }
