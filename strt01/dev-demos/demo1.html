@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>three.js webgl - multiple views</title>
+    <title>vr framework MK1</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <link type="text/css" rel="stylesheet" href="./assets/library/three.js-r126/examples/main.css">
@@ -42,14 +42,13 @@
                 width: 0.5,
                 height: 1.0,
                 background: new THREE.Color(0.5, 0.5, 0.7),
-                eye: [0, 300, 1800],
+                eye: [-50, 300, 1800],
                 up: [0, 1, 0],
-                fov: 30,
+                fov: 60,
                 updateCamera: function (camera, scene, mouseX) {
 
-                    camera.position.x += mouseX * 0.05;
-                    camera.position.x = Math.max(Math.min(camera.position.x, 2000), - 2000);
-                    camera.lookAt(scene.position);
+                    // camera.position.x += mouseX * 0.05;
+                    // camera.position.x = Math.max(Math.min(camera.position.x, 2000), - 2000);
 
                 }
             },
@@ -59,14 +58,13 @@
                 width: 0.5,
                 height: 1.0,
                 background: new THREE.Color(0.5, 0.5, 0.7),
-                eye: [0, 300, 1800],
+                eye: [50, 300, 1800],
                 up: [0, 1, 0],
-                fov: 30,
+                fov: 60,
                 updateCamera: function (camera, scene, mouseX) {
 
-                    camera.position.x += mouseX * 0.05;
-                    camera.position.x = Math.max(Math.min(camera.position.x, 2000), - 2000);
-                    camera.lookAt(scene.position);
+                    // camera.position.x += mouseX * 0.05;
+                    // camera.position.x = Math.max(Math.min(camera.position.x, 2000), - 2000);
 
                 }
             }
@@ -122,13 +120,13 @@
             scene.add(shadowMesh);
 
             shadowMesh = new THREE.Mesh(shadowGeo, shadowMaterial);
-            shadowMesh.position.x = - 400;
+            shadowMesh.position.z = - 400;
             shadowMesh.position.y = - 250;
             shadowMesh.rotation.x = - Math.PI / 2;
             scene.add(shadowMesh);
 
             shadowMesh = new THREE.Mesh(shadowGeo, shadowMaterial);
-            shadowMesh.position.x = 400;
+            shadowMesh.position.z = 400;
             shadowMesh.position.y = - 250;
             shadowMesh.rotation.x = - Math.PI / 2;
             scene.add(shadowMesh);
@@ -176,14 +174,14 @@
             let mesh = new THREE.Mesh(geometry1, material);
             let wireframe = new THREE.Mesh(geometry1, wireframeMaterial);
             mesh.add(wireframe);
-            mesh.position.x = - 400;
+            mesh.position.z = - 400;
             mesh.rotation.x = - 1.87;
             scene.add(mesh);
 
             mesh = new THREE.Mesh(geometry2, material);
             wireframe = new THREE.Mesh(geometry2, wireframeMaterial);
             mesh.add(wireframe);
-            mesh.position.x = 400;
+            mesh.position.z = 400;
             scene.add(mesh);
 
             mesh = new THREE.Mesh(geometry3, material);
