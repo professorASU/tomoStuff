@@ -5,8 +5,13 @@
     <title>VR村 MK1</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-    <link type="text/css" rel="stylesheet" href="./assets/library/three.js-r126/examples/main.css">
+    <!-- <link type="text/css" rel="stylesheet" href="./assets/library/three.js-r126/examples/main.css"> -->
     <style>
+        body {
+            margin: 0;
+            font-family: sans-serif;
+        }
+
         #sightbar {
             width: 6px;
             height: 500px;
@@ -17,6 +22,17 @@
             box-shadow: 0px 0px 5px #fff;
             backdrop-filter: invert(50%);
         }
+
+        .versionIDelement {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            padding: 5px 5px 5px;
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            min-width: 70px;
+            text-align: center;
+        }
     </style>
 </head>
 
@@ -24,6 +40,7 @@
 
     <div id="container"></div>
     <div id="sightbar"></div>
+    <div class="versionIDelement">v1</div>
 
     <!--all scripts-->
     <script src="./assets/library/three.js-r126/build/three.min.js"></script>
