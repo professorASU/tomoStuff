@@ -2,11 +2,10 @@
 <html lang="en">
 
 <head>
-    <title>vr framework MK1</title>
+    <title>VR村 MK1</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <link type="text/css" rel="stylesheet" href="./assets/library/three.js-r126/examples/main.css">
-    <script src="./assets/library/three.js-r126/build/three.min.js"></script>
     <style>
         #sightbar {
             width: 6px;
@@ -15,8 +14,8 @@
             border-radius: 10px;
             top: 20px;
             left: 100px;
-            background: #fff;
             box-shadow: 0px 0px 5px #fff;
+            backdrop-filter: invert(50%);
         }
     </style>
 </head>
@@ -26,10 +25,14 @@
     <div id="container"></div>
     <div id="sightbar"></div>
 
+    <!--all scripts-->
+    <script src="./assets/library/three.js-r126/build/three.min.js"></script>
 
     <script type="module">
+        //module importing
+        import { DeviceOrientationControls } from './assets/library/three.js-r126/examples/jsm/controls/DeviceOrientationControls.js';
 
-        let scene, renderer;
+        let scene, renderer, controls, controlModule;
 
         let mouseX = 0, mouseY = 0;
 
@@ -42,7 +45,7 @@
                 width: 0.5,
                 height: 1.0,
                 // background: new THREE.Color(0.5, 0.5, 0.7),
-                background: new THREE.Color(0, 0, 0),
+                background: new THREE.Color(1, 1, 1),
                 eye: [-50, 300, 1800],
                 up: [0, 1, 0],
                 fov: 60,
@@ -59,7 +62,7 @@
                 width: 0.5,
                 height: 1.0,
                 // background: new THREE.Color(0.5, 0.5, 0.7),
-                background: new THREE.Color(0, 0, 0),
+                background: new THREE.Color(1, 1, 1),
                 eye: [50, 300, 1800],
                 up: [0, 1, 0],
                 fov: 60,
@@ -121,18 +124,6 @@
             shadowMesh.rotation.x = - Math.PI / 2;
             scene.add(shadowMesh);
 
-            shadowMesh = new THREE.Mesh(shadowGeo, shadowMaterial);
-            shadowMesh.position.z = - 400;
-            shadowMesh.position.y = - 250;
-            shadowMesh.rotation.x = - Math.PI / 2;
-            scene.add(shadowMesh);
-
-            shadowMesh = new THREE.Mesh(shadowGeo, shadowMaterial);
-            shadowMesh.position.z = 400;
-            shadowMesh.position.y = - 250;
-            shadowMesh.rotation.x = - Math.PI / 2;
-            scene.add(shadowMesh);
-
             const radius = 200;
 
             const geometry1 = new THREE.IcosahedronGeometry(radius, 1);
@@ -175,21 +166,12 @@
 
             let mesh = new THREE.Mesh(geometry1, material);
             let wireframe = new THREE.Mesh(geometry1, wireframeMaterial);
-            mesh.add(wireframe);
-            mesh.position.z = - 400;
-            mesh.rotation.x = - 1.87;
-            scene.add(mesh);
-
-            mesh = new THREE.Mesh(geometry2, material);
-            wireframe = new THREE.Mesh(geometry2, wireframeMaterial);
-            mesh.add(wireframe);
-            mesh.position.z = 400;
-            scene.add(mesh);
-
             mesh = new THREE.Mesh(geometry3, material);
             wireframe = new THREE.Mesh(geometry3, wireframeMaterial);
             mesh.add(wireframe);
             scene.add(mesh);
+
+            controls = new DeviceOrientationControls(camera);
 
             renderer = new THREE.WebGLRenderer({ antialias: true });
             renderer.setPixelRatio(window.devicePixelRatio);
@@ -226,8 +208,8 @@
         }
 
         function animate() {
-
             render();
+            controls.update();
             requestAnimationFrame(animate);
 
         }
