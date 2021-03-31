@@ -43,13 +43,14 @@
     <div class="versionIDelement">v1</div>
 
     <!--all scripts-->
-    <script src="./assets/library/three.js-r126/build/three.min.js"></script>
 
     <script type="module">
         //module importing
+        import * as THREE from './assets/library/three.js-r126/build/three.module.js';
+
         import { DeviceOrientationControls } from './assets/library/three.js-r126/examples/jsm/controls/DeviceOrientationControls.js';
 
-        let scene, renderer, controls, controlModule;
+        let scene, renderer, controls, controlModule, cameraOne, cameraTwo;
 
         let mouseX = 0, mouseY = 0;
 
@@ -102,7 +103,7 @@
             for (let ii = 0; ii < views.length; ++ii) {
 
                 const view = views[ii];
-                const camera = new THREE.PerspectiveCamera(view.fov, window.innerWidth / window.innerHeight, 1, 10000);
+                camera = new THREE.PerspectiveCamera(view.fov, window.innerWidth / window.innerHeight, 1, 10000);
                 camera.position.fromArray(view.eye);
                 camera.up.fromArray(view.up);
                 view.camera = camera;
