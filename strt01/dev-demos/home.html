@@ -1,0 +1,426 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>VR村 - ブラウザでVRゲーム</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=RocknRoll+One&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            background: #000;
+            -webkit-touch-callout: none;
+            /* iOS Safari */
+            -webkit-user-select: none;
+            /* Safari */
+            -khtml-user-select: none;
+            /* Konqueror HTML */
+            -moz-user-select: none;
+            /* Old versions of Firefox */
+            -ms-user-select: none;
+            /* Internet Explorer/Edge */
+            user-select: none;
+        }
+
+        .topbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: #393939;
+            height: 50px;
+            width: 100%;
+            box-shadow: 0px 3px 13px rgba(0, 0, 0, 0.4);
+        }
+
+        .siteTopTXTLogo {
+            display: inline-block;
+            margin: 0;
+            color: #fff;
+            font-family: 'Dela Gothic One', sans-serif;
+        }
+
+        .top-content {
+            width: 90%;
+            margin-right: auto;
+            margin-left: auto;
+        }
+
+        #big-stuff {
+            position: fixed;
+            top: 95px;
+            left: 50px;
+            background: #fff;
+            width: 400px;
+            height: 500px;
+            border-radius: 10px;
+            box-shadow: 0px 3px 13px rgb(0 0 0 / 10%);
+        }
+
+        .main-label-txt {
+            margin: 0;
+            display: inline-block;
+            font-family: 'RocknRoll One', sans-serif;
+            color: #757575;
+        }
+
+        .big-stuff-content {
+            width: 80%;
+            margin-top: 20px;
+            margin-right: auto;
+            margin-left: auto;
+        }
+
+        #osusume-showcase {
+            width: 300px;
+            height: 180px;
+            background: #292929;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        #vr-mode-trg-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            height: 60px;
+            width: 60px;
+            border-radius: 50%;
+            background: #fff;
+            border: none;
+            box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+            background-image: url("./assets/med/virtual-reality.png");
+            background-size: 40px 40px;
+            background-repeat: no-repeat;
+            background-position: 10px 10px;
+            outline: none;
+            z-index: 990;
+        }
+
+        #page-content {
+            position: absolute;
+            top: 95px;
+            right: 50px;
+            width: 50px;
+            max-width: 700px;
+            min-width: 500px;
+            height: relative;
+        }
+
+        .page-module-ele {
+            width: 100%;
+            background: #ffffff;
+            box-shadow: 0px 3px 13px rgb(0 0 0 / 10%);
+            border-radius: 10px;
+
+            height: 4000px;
+
+        }
+
+        .page-content-wrapper {
+            width: 90%;
+            margin-right: auto;
+            margin-left: auto;
+            min-height: 50px;
+            padding: 20px 10px 20px 10px;
+        }
+
+        .plain-font {
+            font-family: sans-serif;
+            font-size: 20px;
+        }
+
+        .top-margin-wrap {
+            margin-top: 10px;
+        }
+
+        .cat-btn {
+            background: #fff;
+            border: 1px solid #757575;
+            border-radius: 50px;
+            height: 40px;
+            min-width: 70px;
+            padding: 0px 10px 0px 10px;
+            outline: none;
+            margin-left: 5px;
+            margin-bottom: 5px;
+        }
+
+        .cat-checked {
+            background: rgb(48, 76, 99);
+            color: #fff;
+            font-weight: bold;
+        }
+
+        hr {
+            border: 1px solid #eee;
+        }
+
+        #top-acc-btn {
+            position: absolute;
+            top: 9px;
+            right: 20px;
+            background: #fff;
+            padding: 5px 10px 5px 10px;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            outline: none;
+        }
+
+        button,
+        input {
+            outline: none;
+        }
+
+        button:active {
+            filter: brightness(70%);
+        }
+
+        .plain-btn {
+            background: #fff;
+            padding: 4px 7px 4px 7px;
+            border: 1px solid #757575;
+            border-radius: 6px;
+        }
+
+        #the-window-filter {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(8px);
+            display: none;
+        }
+
+        #account-modal {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 90%;
+            min-height: 100px;
+            background: #fff;
+            display: none;
+        }
+
+        .content-margin-wrap {
+            width: 90%;
+            margin-right: auto;
+            margin-left: auto;
+            padding: 10px 10px 30px 10px;
+        }
+
+        .not-fancy-head {
+            font-family: sans-serif;
+        }
+
+        .input-ele-label {
+            font-family: sans-serif;
+            font-size: 18px;
+        }
+
+        .form-input-ele {
+            padding: 5px 5px 5px 5px;
+            border: 1px solid #757575;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            width: 90%;
+        }
+
+        #normal-pane {
+            z-index: 980;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            overflow: auto;
+        }
+
+        #the-whole-thing {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            margin-right: auto;
+            margin-left: auto;
+            max-width: 1250px;
+        }
+
+        #site-bck {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            filter: greyscale(100%);
+            background-image: url("./assets/med/gme-bck.jpg");
+        }
+
+        @media screen and (max-width:900px) {}
+    </style>
+</head>
+
+<body>
+    <div id="normal-pane">
+        <div id="site-bck"></div>
+        <div class="topbar">
+            <div class="top-content">
+                <h1 class="siteTopTXTLogo">VR村<span class="plain-font">（仮）</span></h1>
+                <button id="top-acc-btn">ログイン・新規登録</button>
+            </div>
+        </div>
+
+        <div id="the-whole-thing">
+            <div id="big-stuff">
+                <div class="big-stuff-content">
+                    <h2 class="main-label-txt">おすすめ</h2><br>
+                    <div id="osusume-showcase"></div>
+                    <hr>
+                    <button class="plain-btn">ゲームを投稿</button>
+                    <button class="plain-btn">ゲームクリエイターへ</button>
+                    <button class="plain-btn">使い方</button>
+                    <hr>
+                    <h2 class="main-label-txt">カテゴリー</h2><br>
+                    <div class="top-margin-wrap">
+                        <button class="cat-btn cat-checked">ブラウザ</button>
+                        <button class="cat-btn">キーボード操作</button>
+                        <button class="cat-btn">FPS</button>
+                        <button class="cat-btn">オンライン対戦</button>
+                    </div>
+                </div>
+            </div>
+            <div id="page-content">
+                <div class="page-module-ele">
+                    <div class="page-content-wrapper">
+                        <h2 class="main-label-txt">新着のゲーム</h2>
+                        <div class="game-wrapper"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="the-window-filter">
+            <!-- <button id="modal-closer"></button> -->
+        </div>
+        <div id="account-modal">
+            <div class="content-margin-wrap">
+                <h2 class="not-fancy-head">新規登録</h2>
+                <span class="input-ele-label">メールアドレス</span><br>
+                <input class="form-input-ele" type="text" placeholder="ここに入力"><br>
+                <span class="input-ele-label">パスワード</span><br>
+                <input class="form-input-ele" type="password" placeholder="新しいパスワードを設定"><br>
+                <input class="form-input-ele" type="password" placeholder="パスワードを確認"><br>
+                <button class="plain-btn">アカウントを作る</button>
+                <button class="plain-btn">キャンセル</button>
+                <hr>
+                <button class="plain-btn">ログイン</button>
+            </div>
+        </div>
+    </div>
+
+    <!--vr mode button-->
+    <button id="vr-mode-trg-btn"></button>
+
+    <!-- the script for dynamic ui -->
+    <script>
+        window.onload = function () {
+            scaleUIsetup();
+        }
+
+        window.onresize = function () {
+            scaleUIsetup();
+        }
+
+        function scaleUIsetup() {
+            // all the variable setups
+            var dimensions = [];
+            dimensions.push(window.innerWidth);
+            dimensions.push(window.innerHeight);
+
+
+
+            document.getElementById("account-modal").style.left = (dimensions[0] - document.getElementById("account-modal").offsetWidth) / 2 + "px";
+            document.getElementById("account-modal").style.top = (dimensions[1] - document.getElementById("account-modal").offsetHeight) / 2 + "px";
+
+
+
+            if (dimensions[0] > 1250) {
+                document.getElementById("the-whole-thing").style.left = (dimensions[0] - document.getElementById("the-whole-thing").offsetWidth) / 2 + "px";
+            }
+
+            if (dimensions[0] > 550) {
+
+                //position the big wave element lol
+                // if (dimensions[1] > 640) {
+                //     document.getElementById("big-stuff").style.top = ((dimensions[1] - document.getElementById("big-stuff").offsetHeight) / 2) + 25 + "px";
+                // } else {
+                //     document.getElementById("big-stuff").style.top = "95px";
+                // }
+
+
+
+                document.getElementById("page-content").style.width = (window.innerWidth - document.getElementById("big-stuff").offsetWidth - 150) + "px";
+            } else if (dimensions[0] > 350) {
+                //keep everything at min position for landscape
+            } else {
+                //portrait mode
+            }
+        }
+
+        //modal control script
+        document.getElementById("the-window-filter").addEventListener("click", async () => {
+            closeModal();
+        });
+
+        function closeModal() {
+            //close all modals
+            document.getElementById("account-modal").style.display = "none";
+
+            document.getElementById("the-window-filter").style.display = "none";
+        }
+
+        function openModal(wut) {
+            document.getElementById("the-window-filter").style.display = "block";
+            if (wut == "acc") {
+                document.getElementById("account-modal").style.display = "block";
+            }
+        }
+
+        //vr mode scripts
+        var pageVRMode = false;
+        function switchVRMode(mode) {
+            if (mode == 1) {
+                //on
+                pageVRMode = true;
+                document.getElementById("normal-pane").style.display = "none";
+            } else if (mode == 2) {
+                //off
+                pageVRMode = false;
+                document.getElementById("normal-pane").style.display = "block";
+            } else if (mode == 3) {
+                //which ever is oppposite
+                if (pageVRMode) {
+                    switchVRMode(2);
+                } else {
+                    switchVRMode(1);
+                }
+            }
+        }
+
+        //buttons and custom ui scripting
+        document.getElementById("top-acc-btn").addEventListener("click", async () => {
+            openModal("acc");
+        });
+
+        document.getElementById("vr-mode-trg-btn").addEventListener("click", async () => {
+            switchVRMode(3);
+        });
+    </script>
+</body>
+
+</html>
