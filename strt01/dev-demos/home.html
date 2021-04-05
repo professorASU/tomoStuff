@@ -84,7 +84,7 @@
         #vr-mode-trg-btn {
             position: fixed;
             bottom: 30px;
-            right: 30px;
+            left: 30px;
             height: 60px;
             width: 60px;
             border-radius: 50%;
@@ -96,7 +96,7 @@
             background-repeat: no-repeat;
             background-position: 10px 10px;
             outline: none;
-            z-index: 990;
+            z-index: 750;
         }
 
         #page-content {
@@ -114,9 +114,6 @@
             background: #ffffff;
             box-shadow: 0px 3px 13px rgb(0 0 0 / 10%);
             border-radius: 10px;
-
-            height: 4000px;
-
         }
 
         .page-content-wrapper {
@@ -191,9 +188,11 @@
             top: 0;
             left: 0;
             width: 100%;
+            height: 100vh;
             background: rgba(0, 0, 0, 0.4);
             backdrop-filter: blur(8px);
             display: none;
+            z-index: 400;
         }
 
         #account-modal {
@@ -206,6 +205,7 @@
             min-height: 100px;
             background: #fff;
             display: none;
+            z-index: 410;
         }
 
         .content-margin-wrap {
@@ -233,12 +233,13 @@
         }
 
         #normal-pane {
-            z-index: 980;
+            z-index: 500;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             overflow: auto;
+            background: transparent;
         }
 
         #the-whole-thing {
@@ -261,6 +262,19 @@
             background-image: url("./assets/med/gme-bck.jpg");
         }
 
+        .cont-btn {
+            padding: 7px 10px 7px 10px;
+            font-size: 18px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            margin-right: 10px;
+
+        }
+
+        #modal-wrap {
+            z-index: 990;
+        }
+
         @media screen and (max-width:900px) {}
     </style>
 </head>
@@ -281,8 +295,7 @@
                     <h2 class="main-label-txt">おすすめ</h2><br>
                     <div id="osusume-showcase"></div>
                     <hr>
-                    <button class="plain-btn">ゲームを投稿</button>
-                    <button class="plain-btn">ゲームクリエイターへ</button>
+                    <button class="plain-btn">開発ブログ</button>
                     <button class="plain-btn">使い方</button>
                     <hr>
                     <h2 class="main-label-txt">カテゴリー</h2><br>
@@ -297,6 +310,10 @@
             <div id="page-content">
                 <div class="page-module-ele">
                     <div class="page-content-wrapper">
+                        <h2 class="main-label-txt">ゲームを投稿しよう！</h2><br>
+                        <button class="cont-btn">ゲームを投稿する</button>
+                        <button class="cont-btn">詳しく</button><br>
+                        <h2 class="main-label-txt">今プレイされているゲーム</h2><br>
                         <h2 class="main-label-txt">新着のゲーム</h2>
                         <div class="game-wrapper"></div>
                     </div>
@@ -304,21 +321,23 @@
             </div>
         </div>
 
-        <div id="the-window-filter">
-            <!-- <button id="modal-closer"></button> -->
-        </div>
-        <div id="account-modal">
-            <div class="content-margin-wrap">
-                <h2 class="not-fancy-head">新規登録</h2>
-                <span class="input-ele-label">メールアドレス</span><br>
-                <input class="form-input-ele" type="text" placeholder="ここに入力"><br>
-                <span class="input-ele-label">パスワード</span><br>
-                <input class="form-input-ele" type="password" placeholder="新しいパスワードを設定"><br>
-                <input class="form-input-ele" type="password" placeholder="パスワードを確認"><br>
-                <button class="plain-btn">アカウントを作る</button>
-                <button class="plain-btn">キャンセル</button>
-                <hr>
-                <button class="plain-btn">ログイン</button>
+        <div id="modals-wrap">
+            <div id="the-window-filter">
+                <!-- <button id="modal-closer"></button> -->
+            </div>
+            <div id="account-modal">
+                <div class="content-margin-wrap">
+                    <h2 class="not-fancy-head">新規登録</h2>
+                    <span class="input-ele-label">メールアドレス</span><br>
+                    <input class="form-input-ele" type="text" placeholder="ここに入力"><br>
+                    <span class="input-ele-label">パスワード</span><br>
+                    <input class="form-input-ele" type="password" placeholder="新しいパスワードを設定"><br>
+                    <input class="form-input-ele" type="password" placeholder="パスワードを確認"><br>
+                    <button class="plain-btn">アカウントを作る</button>
+                    <button class="plain-btn" id="cncl-acc-btn">キャンセル</button>
+                    <hr>
+                    <button class="plain-btn">ログイン</button>
+                </div>
             </div>
         </div>
     </div>
@@ -351,6 +370,8 @@
 
             if (dimensions[0] > 1250) {
                 document.getElementById("the-whole-thing").style.left = (dimensions[0] - document.getElementById("the-whole-thing").offsetWidth) / 2 + "px";
+            } else {
+                document.getElementById("the-whole-thing").style.left = 0;
             }
 
             if (dimensions[0] > 550) {
@@ -419,6 +440,10 @@
 
         document.getElementById("vr-mode-trg-btn").addEventListener("click", async () => {
             switchVRMode(3);
+        });
+
+        document.getElementById("cncl-acc-btn").addEventListener("click", async () => {
+            closeModal();
         });
     </script>
 </body>
