@@ -8,10 +8,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=RocknRoll+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/scale.css" />
     <style>
         body {
             margin: 0;
-            background: #000;
+            background: #f2f2f2;
             -webkit-touch-callout: none;
             /* iOS Safari */
             -webkit-user-select: none;
@@ -23,13 +24,15 @@
             -ms-user-select: none;
             /* Internet Explorer/Edge */
             user-select: none;
+            font-family: sans-serif;
         }
 
         .topbar {
             position: fixed;
             top: 0;
             left: 0;
-            background: #393939;
+            background: rgba(244, 244, 244, 0.4);
+            backdrop-filter: blur(10px);
             height: 50px;
             width: 100%;
             box-shadow: 0px 3px 13px rgba(0, 0, 0, 0.4);
@@ -84,7 +87,7 @@
         #vr-mode-trg-btn {
             position: fixed;
             bottom: 30px;
-            left: 30px;
+            right: 30px;
             height: 60px;
             width: 60px;
             border-radius: 50%;
@@ -155,9 +158,11 @@
             border: 1px solid #eee;
         }
 
-        #top-acc-btn {
+        #acc-detail-opn {
             position: absolute;
             top: 9px;
+            height: 32px;
+            min-width: 32px;
             right: 20px;
             background: #fff;
             padding: 5px 10px 5px 10px;
@@ -181,6 +186,9 @@
             padding: 4px 7px 4px 7px;
             border: 1px solid #757575;
             border-radius: 6px;
+            font-size: 15px;
+            height: 40px;
+            min-width: 100px;
         }
 
         #the-window-filter {
@@ -195,7 +203,7 @@
             z-index: 400;
         }
 
-        #account-modal {
+        .modal-mod {
             position: fixed;
             top: 10px;
             left: 10px;
@@ -275,6 +283,62 @@
             z-index: 990;
         }
 
+        .non-data {
+            font-family: sans-serif;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            margin-left: 10px;
+            border: 2px solid #757575;
+            padding: 10px 10px 10px 10px;
+            background: #fff;
+            color: #858585;
+            border-radius: 6px;
+        }
+
+        #prf-ico-top {
+            display: table-cell;
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            background: #000;
+            background-image: url("./assets/med/no-face-mask.png");
+            background-repeat: no-repeat;
+            background-size: 20px 20px;
+            background-position: 0px 0px;
+        }
+
+        #prf-nme-top {
+            display: table-cell;
+            padding: 0px 10px 0px 10px;
+        }
+
+        #vr-options-modal {
+            position: fixed;
+            bottom: 120px;
+            right: 20px;
+            left: revert;
+            top: revert;
+        }
+
+        #vr-ui-port {
+            display: none;
+        }
+
+        #ctrl-pnl-tip {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+            background: rgba(244, 244, 244, 0.2);
+            padding: 10px 20px 10px 20px;
+            border-radius: 20px;
+            font-size: 20px;
+            color: #fff;
+            backdrop-filter: blur(20px);
+            -webkit-transition: 0.5s;
+            transition: 0.5s;
+        }
+
         @media screen and (max-width:900px) {}
     </style>
 </head>
@@ -285,7 +349,10 @@
         <div class="topbar">
             <div class="top-content">
                 <h1 class="siteTopTXTLogo">VR村<span class="plain-font">（仮）</span></h1>
-                <button id="top-acc-btn">ログイン・新規登録</button>
+                <button id="acc-detail-opn">
+                    <div id="prf-ico-top"></div>
+                    <div id="prf-nme-top">名無しさん</div>
+                </button>
             </div>
         </div>
 
@@ -303,6 +370,7 @@
                         <button class="cat-btn cat-checked">ブラウザ</button>
                         <button class="cat-btn">キーボード操作</button>
                         <button class="cat-btn">FPS</button>
+                        <button class="cat-btn">3D</button>
                         <button class="cat-btn">オンライン対戦</button>
                     </div>
                 </div>
@@ -310,11 +378,16 @@
             <div id="page-content">
                 <div class="page-module-ele">
                     <div class="page-content-wrapper">
-                        <h2 class="main-label-txt">ゲームを投稿しよう！</h2><br>
+                        <h2 class="main-label-txt">VR村へようこそ！</h2><br>
                         <button class="cont-btn">ゲームを投稿する</button>
-                        <button class="cont-btn">詳しく</button><br>
-                        <h2 class="main-label-txt">今プレイされているゲーム</h2><br>
+                        <button id="buy-headset-btn" class="cont-btn">ヘッドセットを買う（200円）</button><br>
+                        <h2 class="main-label-txt">プレイされているゲーム</h2><br>
+                        <div class="non-data" id="non-data-playnow">
+                            <span>フレンドのみ表示</span><input type="checkbox"><br>
+                            まだ何も開拓されていない、、。
+                        </div>
                         <h2 class="main-label-txt">新着のゲーム</h2>
+                        <div class="non-data" id="non-data-newgame">あれ、ゲームがない、、。</div>
                         <div class="game-wrapper"></div>
                     </div>
                 </div>
@@ -325,7 +398,7 @@
             <div id="the-window-filter">
                 <!-- <button id="modal-closer"></button> -->
             </div>
-            <div id="account-modal">
+            <div id="account-modal" class="modal-mod">
                 <div class="content-margin-wrap">
                     <h2 class="not-fancy-head">新規登録</h2>
                     <span class="input-ele-label">メールアドレス</span><br>
@@ -339,11 +412,28 @@
                     <button class="plain-btn">ログイン</button>
                 </div>
             </div>
+            <div id="vr-options-modal" class="modal-mod">
+                <div class="content-margin-wrap">
+                    <h2>スマホ用のVRゴーグルを使用しますか？</h2>
+                    <button id="vr-mode-trg-nogoggle" class="plain-btn">YES</button>
+                    <button class="plain-btn">NO</button>
+                    <hr>
+                    <button class="plain-btn" id="cncl-vrmode-btn">キャンセル</button>
+                </div>
+            </div>
         </div>
+    </div>
+
+    <!--vr ui-->
+    <div id="vr-ui-port">
+        <div id="ctrl-pnl-tip">下を向いてメニューを表示</div>
     </div>
 
     <!--vr mode button-->
     <button id="vr-mode-trg-btn"></button>
+
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
 
     <!-- the script for dynamic ui -->
     <script>
@@ -360,13 +450,6 @@
             var dimensions = [];
             dimensions.push(window.innerWidth);
             dimensions.push(window.innerHeight);
-
-
-
-            document.getElementById("account-modal").style.left = (dimensions[0] - document.getElementById("account-modal").offsetWidth) / 2 + "px";
-            document.getElementById("account-modal").style.top = (dimensions[1] - document.getElementById("account-modal").offsetHeight) / 2 + "px";
-
-
 
             if (dimensions[0] > 1250) {
                 document.getElementById("the-whole-thing").style.left = (dimensions[0] - document.getElementById("the-whole-thing").offsetWidth) / 2 + "px";
@@ -391,6 +474,9 @@
             } else {
                 //portrait mode
             }
+
+            document.getElementById("account-modal").style.left = (dimensions[0] - 500) / 2 + "px";
+            document.getElementById("account-modal").style.top = (dimensions[1] - 360) / 2 + "px";
         }
 
         //modal control script
@@ -401,7 +487,9 @@
         function closeModal() {
             //close all modals
             document.getElementById("account-modal").style.display = "none";
+            document.getElementById("vr-options-modal").style.display = "none";
 
+            //close the back filter
             document.getElementById("the-window-filter").style.display = "none";
         }
 
@@ -409,6 +497,8 @@
             document.getElementById("the-window-filter").style.display = "block";
             if (wut == "acc") {
                 document.getElementById("account-modal").style.display = "block";
+            } else if (wut == "vrmode") {
+                document.getElementById("vr-options-modal").style.display = "block";
             }
         }
 
@@ -416,14 +506,20 @@
         var pageVRMode = false;
         function switchVRMode(mode) {
             if (mode == 1) {
-                //on
+                //on without goggles
                 pageVRMode = true;
+                vrmodect = true;
                 document.getElementById("normal-pane").style.display = "none";
+                document.getElementById("vr-ui-port").style.display = "block";
             } else if (mode == 2) {
+                //on with googles
+            } else if (mode == 3) {
                 //off
                 pageVRMode = false;
+                vrmodect = false;
                 document.getElementById("normal-pane").style.display = "block";
-            } else if (mode == 3) {
+                document.getElementById("vr-ui-port").style.display = "none";
+            } else if (mode == 4) {
                 //which ever is oppposite
                 if (pageVRMode) {
                     switchVRMode(2);
@@ -434,17 +530,87 @@
         }
 
         //buttons and custom ui scripting
-        document.getElementById("top-acc-btn").addEventListener("click", async () => {
-            openModal("acc");
-        });
+        // document.getElementById("top-acc-btn").addEventListener("click", async () => {
+        //     openModal("acc");
+        // });
 
         document.getElementById("vr-mode-trg-btn").addEventListener("click", async () => {
-            switchVRMode(3);
+            //show vr mode confirmation modal
+            openModal("vrmode");
         });
 
         document.getElementById("cncl-acc-btn").addEventListener("click", async () => {
             closeModal();
         });
+
+        document.getElementById("cncl-vrmode-btn").addEventListener("click", async () => {
+            closeModal();
+        })
+
+        document.getElementById("buy-headset-btn").addEventListener("click", async () => {
+            window.open("https://cutt.ly/ScI2fHR");
+        });
+
+        document.getElementById("vr-mode-trg-nogoggle").addEventListener("click", async () => {
+            switchVRMode(1);
+        });
+
+        //tooltips
+        tippy('#vr-mode-trg-btn', {
+            content: "VRモードをオン・オフにする",
+            theme: 'light-border'
+        });
+
+        tippy('#detail-for-devs', {
+            content: "どういうゲームを作ってアップロードできる？"
+        });
+
+    </script>
+
+    <!--server scripts-->
+    <script>
+
+    </script>
+
+    <script src="./assets/library/three.js-r126/build/three.min.js"></script>
+    <!--vr mode scripts-->
+    <script>
+        var vrmodect = false;
+        var camera, scene, renderer;
+        var geometry, material, mesh;
+
+        function init() {
+
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10);
+            camera.position.z = 3;
+
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x000000);
+
+            geometry = new THREE.SphereGeometry(1);
+            material = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true });
+
+            mesh = new THREE.Mesh(geometry, material);
+            scene.add(mesh);
+
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+
+        }
+
+        function animate(time) {
+            if (vrmodect) {
+                mesh.rotation.x = time * 0.0005;
+                mesh.rotation.y = time * 0.001;
+            }
+            renderer.render(scene, camera);
+            requestAnimationFrame(animate);
+
+        }
+
+        init();
+        requestAnimationFrame(animate);
     </script>
 </body>
 
