@@ -1,4 +1,5 @@
-<!DOCTYPE html> html>
+<!--open this file in any browser-->
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -17,7 +18,8 @@
                 fibo[i + 2] = fibo[i] + fibo[i + 1];
                 var check = checkSquare(fibo[i + 2]);
                 if (check) {
-                    document.write("<b>" + fibo[i + 2] + "</b>");
+                    document.write("<b>" + fibo[i + 2] + "</b><br>");
+                    document.write("First square number in Fibonacci sequence is: <b>" + fibo[i + 2] + "</b><br>");
                     break;
                 } else {
                     document.write(fibo[i + 2] + "\n");
@@ -32,3 +34,5 @@
         };
     </script>
 </body>
+
+</html>
